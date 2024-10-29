@@ -8,7 +8,6 @@ const HeaderAndHero = () => {
     <>
     <Hero/>
     <AboutSection/>
-    <ProductSection/>
     </>
   );
 };

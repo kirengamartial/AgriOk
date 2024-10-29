@@ -13,16 +13,40 @@ import MainLayout from './layouts/MainLayout'
 import ShopPage from './pages/ShopPage'
 import AboutPage from './pages/AboutPage'
 import TrendingPage from './pages/TrendingPage'
+import SingleProductPage from './pages/SingleProductPage'
+import CartPage from './pages/CartPage'
+import CheckoutPage from './pages/OrderPage'
+import LoginPage from './pages/LoginPage'
+import RegisterPage from './pages/RegisterPage'
+import AdminLayout from './layouts/AdminLayout/AdminLayout'
+import AdminHomePage from './pages/AdminHomePage'
+import FarmerLayout from './layouts/FarmerLayout/FarmerLayout'
+import FarmerHomePage from './pages/FarmerHomePage'
 
 const App = () => {
   const router = createBrowserRouter(
     createRoutesFromElements(
+      <>
         <Route path='/' element={<MainLayout/>}>
           <Route index element={<HomePage/>}/>
           <Route path='/shop' element={<ShopPage/>}/>
           <Route path='/about' element={<AboutPage/>}/>
           <Route path='/trending' element={<TrendingPage/>}/>
+          <Route path='/product/:id' element={<SingleProductPage/>}/>
+          <Route path='/cart' element={<CartPage/>}/>
+          <Route path='/checkout' element={<CheckoutPage/>}/>
         </Route>
+        <Route path='/login' element={<LoginPage/>}/>
+        <Route path='/register' element={<RegisterPage/>}/>
+
+        <Route path='' element={<AdminLayout/>}>
+          <Route path='/admin' element={<AdminHomePage/>}/>
+        </Route>
+
+        <Route path='' element={<FarmerLayout/>}>
+          <Route path='/farmer' element={<FarmerHomePage/>}/>
+        </Route>
+      </>
     )
   )
   
