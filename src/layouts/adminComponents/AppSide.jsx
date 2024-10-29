@@ -73,9 +73,9 @@ const AppAside = () => {
           {toggleProducts && (
             <nav className="mt-3 space-y-1 pl-3">
               <Link
-                to="/products/list"
+                to="/admin/product/list"
                 className={`flex items-center px-3 py-2 text-sm rounded-md transition-colors ${
-                  location.pathname === '/products/list'
+                  location.pathname === '/admin/product/list'
                     ? 'bg-gray-800 text-white'
                     : 'text-gray-300 hover:bg-gray-800 hover:text-white'
                 }`}
@@ -84,9 +84,9 @@ const AppAside = () => {
                 List
               </Link>
               <Link
-                to="/products/create"
+                to="/admin/product/create"
                 className={`flex items-center px-3 py-2 text-sm rounded-md transition-colors ${
-                  location.pathname === '/products/create'
+                  location.pathname === '/admin/product/create'
                     ? 'bg-gray-800 text-white'
                     : 'text-gray-300 hover:bg-gray-800 hover:text-white'
                 }`}

@@ -24,6 +24,9 @@ const WhiteHeader = () => {
                 <Link to="/trending" className="text-gray-600 hover:text-gray-900">
                   Trending
                 </Link>
+                <Link to="/admin" className="text-gray-600 hover:text-gray-900">
+                  Dashboard
+                </Link>
               </nav>
             </div>
 

@@ -22,6 +22,10 @@ import AdminLayout from './layouts/AdminLayout/AdminLayout'
 import AdminHomePage from './pages/AdminHomePage'
 import FarmerLayout from './layouts/FarmerLayout/FarmerLayout'
 import FarmerHomePage from './pages/FarmerHomePage'
+import AdminCreateProductPage from './pages/AdminCreateProductPage'
+import AdminListProductsPage from './pages/AdminListProductsPage'
+import FarmerCreateTrendingPage from './pages/FarmerCreateTrendingPage'
+import EditProductForm from './pages/AdminEditProductPage'
 
 const App = () => {
   const router = createBrowserRouter(
@@ -41,10 +45,14 @@ const App = () => {
 
         <Route path='' element={<AdminLayout/>}>
           <Route path='/admin' element={<AdminHomePage/>}/>
+          <Route path='/admin/product/create' element={<AdminCreateProductPage/>}/>
+          <Route path='/admin/product/list' element={<AdminListProductsPage/>}/>
+          <Route path='/admin/product/edit/:id' element={<EditProductForm/>}/>
         </Route>
 
         <Route path='' element={<FarmerLayout/>}>
           <Route path='/farmer' element={<FarmerHomePage/>}/>
+          <Route path='/farmer/trending/create' element={<FarmerCreateTrendingPage/>}/>
         </Route>
       </>
     )
