@@ -1,17 +1,8 @@
 import React from 'react';
-import { GoogleMap, LoadScript } from '@react-google-maps/api';
+import MapComponent from '../components/map';
 
 const FieldMonitoringDashboard = () => {
-  const center = {
-    lat: -33.8688, // Example coordinates for Sydney, Australia
-    lng: 151.2093
-  };
-
-  const mapContainerStyle = {
-    width: '100%',
-    height: '100%',
-    borderRadius: '8px'
-  };
+ 
 
   return (
     <div className="min-h-screen bg-gray-100 p-8">
@@ -83,37 +74,7 @@ const FieldMonitoringDashboard = () => {
 
         {/* Map Section */}
         <div className="col-span-8">
-          <div className="bg-white rounded-lg p-6 shadow-sm h-[400px]">
-            <LoadScript googleMapsApiKey="YOUR_GOOGLE_MAPS_API_KEY">
-              <GoogleMap
-                mapContainerStyle={mapContainerStyle}
-                center={center}
-                zoom={15}
-                options={{
-                  styles: [
-                    {
-                      featureType: "administrative",
-                      elementType: "geometry",
-                      stylers: [{ visibility: "off" }]
-                    },
-                    {
-                      featureType: "poi",
-                      stylers: [{ visibility: "off" }]
-                    },
-                    {
-                      featureType: "road",
-                      elementType: "labels.icon",
-                      stylers: [{ visibility: "off" }]
-                    },
-                    {
-                      featureType: "transit",
-                      stylers: [{ visibility: "off" }]
-                    }
-                  ]
-                }}
-              />
-            </LoadScript>
-          </div>
+          <MapComponent/>
         </div>
       </div>
 
