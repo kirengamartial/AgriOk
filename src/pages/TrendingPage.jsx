@@ -52,7 +52,6 @@ const trendingPosts = [
 const TrendingSection = () => {
   return (
     <div className="w-full mb-16">
-      {/* Hero Section with background image */}
       <div className="relative h-80">
         <div 
           className="absolute inset-0 bg-cover bg-center"
@@ -63,15 +62,15 @@ const TrendingSection = () => {
           <div className="absolute inset-0 bg-black/20" />
         </div>
         <div className="relative h-full flex flex-col justify-center items-center text-center">
-          <h1 className="text-4xl font-bold text-white mb-2">What's trending</h1>
-          <p className="text-white text-sm opacity-90">
+          <h1 className="text-3xl font-bold text-white mb-2">What's trending</h1>
+          <p className="text-white text-xs opacity-90">
             Lorem ipsum quod grave ens levt nosce design teipsum gravi leve design nosce te ipsum
           </p>
         </div>
       </div>
 
       {/* Container for centered content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Trending Header */}
         <div className="py-8 flex items-center gap-2">
           <h2 className="text-lg">Trending</h2>

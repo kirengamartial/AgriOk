@@ -12,7 +12,7 @@ const AppAside = () => {
   const [toggleProducts, setToggleProducts] = useState(true);
 
   return (
-    <aside className="h-screen w-64 bg-[#1a1a1a] text-white flex flex-col">
+    <aside className="h-screen w-60 bg-[#1a1a1a] text-white flex flex-col">
       {/* Profile Section */}
       <div className="p-4 border-b border-gray-800">
         <div className="flex items-center space-x-2">
@@ -48,9 +48,11 @@ const AppAside = () => {
       <div className="flex-1 overflow-y-auto">
         {/* Dashboard Section */}
         <div className="px-3 py-4">
+          <Link to='/admin'> 
           <p className="px-3 text-xs font-semibold text-gray-300 uppercase tracking-wider">
             Dashboard
           </p>
+          </Link>
         </div>
         
         {/* Products Section */}

@@ -24,7 +24,7 @@ const Hero = () => {
               Farms
             </h1>
             <Link to='/about'>
-            <button className="bg-yellow-400 text-black px-6 py-2 rounded-full hover:bg-yellow-500 transition-colors">
+            <button className="bg-yellow-400 text-sm text-black px-6 py-2 rounded-full hover:bg-yellow-500 transition-colors">
               About Us →
             </button>
             </Link>

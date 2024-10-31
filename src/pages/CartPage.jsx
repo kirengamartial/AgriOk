@@ -25,7 +25,7 @@ const CartPage = () => {
       </div>
 
       {/* Cart Content */}
-      <div className="container mx-auto px-4 py-12">
+      <div className="max-w-5xl mx-auto px-4 py-12">
         {/* Cart Table */}
         <div className="overflow-x-auto">
           <table className="w-full">
@@ -44,7 +44,7 @@ const CartPage = () => {
                   <button className="text-gray-500 hover:text-gray-700">×</button>
                 </td>
                 <td className="px-6 py-4">
-                  <div className="flex items-center gap-4">
+                  <div className="flex items-center gap-4 text-sm">
                     {/* Replace with your product image */}
                     <img
                       src={apple}
@@ -71,7 +71,7 @@ const CartPage = () => {
         </div>
 
         {/* Update Cart Button */}
-        <div className="flex justify-end mt-4">
+        <div className="flex justify-end mt-4 ">
           <button className="bg-yellow-400 text-white px-6 py-2 rounded hover:bg-yellow-500 transition-colors">
             Update cart
           </button>
@@ -79,7 +79,7 @@ const CartPage = () => {
 
         {/* Cart Totals */}
         <div className="mt-12">
-          <h2 className="text-xl font-medium mb-4">Cart totals</h2>
+          <h2 className="text-lg font-medium mb-4">Cart totals</h2>
           <div className="bg-white p-6 max-w-md">
             <div className="flex justify-between py-3 border-b">
               <span>Subtotal</span>
@@ -90,7 +90,7 @@ const CartPage = () => {
               <span className="font-medium">${subtotal}</span>
             </div>
             <Link to='/checkout'>
-            <button className="w-full bg-yellow-400 text-white py-3 px-4 mt-6 rounded uppercase font-medium hover:bg-yellow-500 transition-colors">
+            <button className="w-full text-sm bg-yellow-400 text-white py-3 px-4 mt-6 rounded uppercase font-medium hover:bg-yellow-500 transition-colors">
               Proceed to checkout
             </button>
             </Link>

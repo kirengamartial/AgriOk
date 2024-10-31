@@ -123,39 +123,39 @@ const ShopPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className=" min-h-screen bg-white">
       {/* Hero Section */}
-      <div className="relative h-64">
+      <div className=" relative h-64">
         {/* Background Image */}
         <div 
-          className="absolute inset-0 bg-cover bg-center"
+          className=" absolute inset-0 bg-cover bg-center"
           style={{ backgroundImage: `url(${heroImage})` }}
         >
-          <div className="absolute inset-0 bg-black/40"></div>
+          <div className=" absolute inset-0 bg-black/40"></div>
         </div>
         
         {/* Shop Text */}
-        <div className="relative z-10 container mx-auto h-full">
-          <h1 className="text-4xl font-bold text-white pt-20 pl-4">Shop</h1>
+        <div className="max-w-5xl relative z-10 container mx-auto h-full">
+          <h1 className="text-3xl font-bold text-white pt-20 pl-4">Shop</h1>
         </div>
 
         {/* Navigation Bar */}
-        <div className="absolute bottom-0 left-0 right-0 bg-white">
-          <div className="container mx-auto">
+        <div className=" absolute bottom-0 left-0 right-0 bg-white">
+          <div className="max-w-5xl mx-auto">
             <div className="flex items-center h-12 px-4">
-              <span className="text-gray-600 text-sm">Home</span>
-              <span className="text-yellow-400 text-sm mx-2">/</span>
-              <span className="text-yellow-400 text-sm">Products</span>
+              <span className="text-gray-600 text-xs">Home</span>
+              <span className="text-yellow-400 text-xs mx-2">/</span>
+              <span className="text-yellow-400 text-xs">Products</span>
             </div>
           </div>
         </div>
       </div>
 
       {/* Products Section */}
-      <div className="container mx-auto py-8">
+      <div className="max-w-5xl mx-auto py-8">
         {/* Header Info */}
         <div className="flex justify-between items-center mb-8">
-          <p className="text-gray-500">
+          <p className="text-gray-500 text-sm">
             Showing {startIndex + 1}–{Math.min(startIndex + ITEMS_PER_PAGE, sortedProducts.length)} of {sortedProducts.length} results
           </p>
           <select 
@@ -179,7 +179,7 @@ const ShopPage = () => {
                 <img
                   src={product.image}
                   alt={product.name}
-                  className="w-full h-auto object-contain p-4 group-hover:scale-105 transition-transform duration-300"
+                  className="w-52 h-auto object-contain p-4 group-hover:scale-105 transition-transform duration-300"
                 />
               </div>
               <div className="text-xs text-gray-500 mb-2">{product.category}</div>

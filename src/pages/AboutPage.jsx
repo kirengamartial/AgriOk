@@ -19,23 +19,23 @@ const AboutPage = () => {
         </div>
         
         {/* Hero Content */}
-        <div className="relative z-10 container mx-auto h-full flex flex-col justify-center px-4">
-          <h1 className="text-5xl font-bold text-white mb-4">About us</h1>
-          <p className="text-white text-lg">Organic food is very popular and good for health these days.</p>
+        <div className="max-w-5xl relative z-10 container mx-auto h-full flex flex-col justify-center px-4">
+          <h1 className="text-3xl font-bold text-white mb-4">About us</h1>
+          <p className="text-white text-md">Organic food is very popular and good for health these days.</p>
         </div>
       </div>
 
       {/* Main Content Section */}
-      <div className="container mx-auto py-16 px-4">
+      <div className="max-w-5xl mx-auto py-16 px-4">
         <div className="flex flex-col lg:flex-row gap-12">
           {/* Left Content */}
           <div className="lg:w-1/2">
             <div className="flex items-center gap-2 mb-6">
               <div className="w-6 h-6 bg-yellow-400 transform rotate-45"></div>
-              <span className="text-lg">About Us</span>
+              <span className="text-md">About Us</span>
             </div>
             
-            <h2 className="text-4xl font-bold mb-6">We're Best Agriculture<br/> & Organic Firms</h2>
+            <h2 className="text-3xl font-bold mb-6">We're Best Agriculture<br/> & Organic Firms</h2>
             
             <p className="text-gray-600 mb-8">
               Nam et eros est ut ipsum et accusantium aut doloremque et laudantium. totam
@@ -79,7 +79,7 @@ const AboutPage = () => {
     {/* Image Grid */}
     <div className="relative grid grid-cols-2 gap-6">
       {/* Top Left - Orange Image */}
-      <div className="h-48 -mt-4">
+      <div className="h-48 mt-4">
         <img 
           src={Image1}
           alt="Orange juice" 

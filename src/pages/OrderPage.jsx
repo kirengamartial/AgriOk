@@ -41,7 +41,7 @@ const CheckoutPage = () => {
         </div>
         {/* Navigation */}
         <div className="absolute top-4 right-4 bg-white px-4 py-2 rounded-md mt-36 mr-20">
-          <div className="flex items-center gap-2 text-sm">
+          <div className="flex items-center gap-2 text-xs">
             <span>Home</span>
             <span className="text-yellow-400">/</span>
             <span className="text-yellow-400">Checkout</span>
@@ -50,7 +50,7 @@ const CheckoutPage = () => {
       </div>
 
       {/* Checkout Content */}
-      <div className="container mx-auto px-4 py-12">
+      <div className="max-w-5xl mx-auto px-4 py-12">
         <form onSubmit={handleSubmit} className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           {/* Billing Details */}
           <div>

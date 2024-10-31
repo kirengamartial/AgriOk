@@ -1,4 +1,6 @@
 import React from 'react';
+import section from '../../public/Section2.png'
+import image from '../../public/Rectangle 43.png'
 const BlogPost = () => {
   return (
     <div className="w-full">
@@ -7,7 +9,7 @@ const BlogPost = () => {
         <div 
           className="absolute inset-0 bg-cover bg-center"
           style={{
-            backgroundImage: `url(../../public/Section2.png)`
+            backgroundImage: `url(${section})`
           }}
         >
           <div className="absolute inset-0 bg-black/20" />
@@ -28,7 +30,7 @@ const BlogPost = () => {
         {/* Single Image Container */}
         <div className="mb-12">
           <img
-            src="../../public/Rectangle 43.png"
+            src={image}
             alt="Concept"
             className="w-full object-contain"
           />

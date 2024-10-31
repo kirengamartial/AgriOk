@@ -62,14 +62,14 @@ const Footer = () => {
 
   return (
     <footer className="bg-[#1c1c1c] text-gray-300 py-16">
-      <div className="max-w-7xl mx-auto px-4">
+      <div className="max-w-5xl mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* About Section */}
           <div>
-            <h3 className="text-white text-lg font-semibold mb-4">About Us</h3>
-            <p className="text-sm mb-6">{aboutText}</p>
+            <h3 className="text-white text-md font-semibold mb-4">About Us</h3>
+            <p className="text-xs mb-6">{aboutText}</p>
             <div>
-              <h4 className="text-white text-sm font-semibold mb-3">Follow On</h4>
+              <h4 className="text-white text-xs font-semibold mb-3">Follow On</h4>
               <div className="flex space-x-3">
                 {socialLinks.map((social, index) => (
                   <a
@@ -87,13 +87,13 @@ const Footer = () => {
           {/* Rest of the footer code remains the same */}
           {/* Services Section */}
           <div>
-            <h3 className="text-white text-lg font-semibold mb-4">Services</h3>
+            <h3 className="text-white text-md font-semibold mb-4">Services</h3>
             <ul className="space-y-2">
               {servicesLinks.map((service, index) => (
                 <li key={index}>
                   <a
                     href="#"
-                    className="text-sm hover:text-white transition-colors flex items-center"
+                    className="text-xs hover:text-white transition-colors flex items-center"
                   >
                     <span className="mr-2">›</span>
                     {service}
@@ -105,13 +105,13 @@ const Footer = () => {
 
           {/* Company Links Section */}
           <div>
-            <h3 className="text-white text-lg font-semibold mb-4">Quick Links</h3>
+            <h3 className="text-white text-md font-semibold mb-4">Quick Links</h3>
             <ul className="space-y-2">
               {companyLinks.map((link, index) => (
                 <li key={index}>
                   <a
                     href="#"
-                    className="text-sm hover:text-white transition-colors flex items-center"
+                    className="text-xs hover:text-white transition-colors flex items-center"
                   >
                     <span className="mr-2">›</span>
                     {link}
@@ -123,7 +123,7 @@ const Footer = () => {
 
           {/* News Feeds Section */}
           <div>
-            <h3 className="text-white text-lg font-semibold mb-4">News Feeds</h3>
+            <h3 className="text-white text-md font-semibold mb-4">News Feeds</h3>
             <div className="space-y-4">
               {newsFeeds.map((news) => (
                 <div key={news.id} className="flex space-x-4">
@@ -137,14 +137,14 @@ const Footer = () => {
                   <div>
                     <a
                       href="#"
-                      className="text-sm hover:text-white transition-colors line-clamp-2"
+                      className="text-xs hover:text-white transition-colors line-clamp-2"
                     >
                       {news.title}
                     </a>
                   </div>
                 </div>
               ))}
-              <a href="#" className="text-sm text-gray-400 hover:text-white uppercase tracking-wider">
+              <a href="#" className="text-xs text-gray-400 hover:text-white uppercase tracking-wider">
                 View More News
               </a>
             </div>

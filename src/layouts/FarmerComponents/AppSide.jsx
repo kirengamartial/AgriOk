@@ -11,7 +11,7 @@ const AppAside = () => {
   const [toggleLogout, setToggleLogout] = useState(false);
 
   return (
-    <aside className="h-screen w-64 bg-[#1a1a1a] text-white flex flex-col">
+    <aside className="h-screen w-60 bg-[#1a1a1a] text-white flex flex-col">
       {/* Profile Section */}
       <div className="p-4 border-b border-gray-800">
         <div className="flex items-center space-x-2">

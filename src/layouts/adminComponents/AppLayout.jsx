@@ -5,7 +5,7 @@ import React from 'react';
 const AppLayout = ({ aside, header, main }) => {
     return (
         <article className="h-screen flex">
-            <aside className="w-64 shadow-lg flex flex-col bg-white border-r border-app-border">
+            <aside className="w-60 shadow-lg flex flex-col bg-white border-r border-app-border">
                 {aside}
             </aside>
             <section className="flex-1 flex flex-col overflow-hidden bg-body">

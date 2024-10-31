@@ -87,18 +87,17 @@ const ordersData = [
 ];
 
 const StatsCard = ({ icon: Icon, title, value, change, period, color }) => (
-  <div className="bg-white p-6 rounded-lg shadow-sm">
+  <div className="bg-white p-6 rounded-lg shadow-sm w-[170px]">
     <div className="flex flex-col">
       <div className="flex justify-between items-start mb-4">
         <div className={`p-2 bg-${color}-50 rounded-lg`}>
           <Icon className={`text-${color}-500`} size={24} />
         </div>
-        <button className="text-gray-500 text-sm">View More</button>
       </div>
       <div className="mt-2">
-        {title && <p className="text-gray-600 text-sm mb-1">{title}</p>}
-        <h3 className="text-2xl font-bold mb-2">{value}</h3>
-        <div className="flex items-center text-sm">
+        {title && <p className="text-gray-600 text-xs mb-1">{title}</p>}
+        <h3 className="text-xl font-bold mb-2">{value}</h3>
+        <div className="flex items-center text-xs">
           {change > 0 ? (
             <ArrowUpRight className="text-green-500 mr-1" size={16} />
           ) : (
@@ -164,10 +163,10 @@ const Dashboard = () => {
   return (
     <div className="min-h-screen bg-gray-50 p-6">
       {/* Alert Banner */}
-      <div className="bg-red-50 p-4 rounded-lg mb-6">
+      <div className="bg-red-50 p-4 rounded-lg mb-6 w-[600px]">
         <div className="flex items-center">
           <AlertCircle className="text-red-500 mr-2" size={20} />
-          <p className="text-red-800">
+          <p className="text-red-800 text-sm">
             We regret to inform you that our server is currently experiencing technical difficulties.
           </p>
         </div>
@@ -213,7 +212,7 @@ const Dashboard = () => {
         </div>
 
         {/* Bar Chart on Right */}
-        <div className="w-2/3 bg-white p-6 rounded-lg shadow-sm">
+        <div className="w-[600px] bg-white p-6 rounded-lg shadow-sm">
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-lg font-semibold">Performance Metrics</h2>
             <div className="flex space-x-4">
