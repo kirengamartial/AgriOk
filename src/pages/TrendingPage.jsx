@@ -2,6 +2,7 @@ import React from 'react';
 import Section2 from '../../public/Section2.png'
 import Rectange1 from '../../public/Rectangle 32.png'
 import Rectange2 from '../../public/Rectangle 35.png'
+import { Link } from 'react-router-dom';
 
 const trendingPosts = [
     {
@@ -80,7 +81,8 @@ const TrendingSection = () => {
         {/* Grid of posts */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {trendingPosts.map((post) => (
-            <div key={post.id} className="flex flex-col mb-14">
+            <Link key={post.id} to={`/trending/${post.id}`}>
+            <div  className="flex flex-col mb-14">
               <div className="mb-4">
                 <img 
                   src={post.image}
@@ -98,6 +100,7 @@ const TrendingSection = () => {
                 </p>
               </div>
             </div>
+            </Link>
           ))}
         </div>
       </div>

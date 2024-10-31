@@ -26,6 +26,7 @@ import AdminCreateProductPage from './pages/AdminCreateProductPage'
 import AdminListProductsPage from './pages/AdminListProductsPage'
 import FarmerCreateTrendingPage from './pages/FarmerCreateTrendingPage'
 import EditProductForm from './pages/AdminEditProductPage'
+import SingleTrendingPage from './pages/SingleTrendingPage'
 
 const App = () => {
   const router = createBrowserRouter(
@@ -36,6 +37,7 @@ const App = () => {
           <Route path='/shop' element={<ShopPage/>}/>
           <Route path='/about' element={<AboutPage/>}/>
           <Route path='/trending' element={<TrendingPage/>}/>
+          <Route path='/trending/:id' element={<SingleTrendingPage/>}/>
           <Route path='/product/:id' element={<SingleProductPage/>}/>
           <Route path='/cart' element={<CartPage/>}/>
           <Route path='/checkout' element={<CheckoutPage/>}/>

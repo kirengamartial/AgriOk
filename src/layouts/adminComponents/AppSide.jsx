@@ -16,7 +16,9 @@ const AppAside = () => {
       {/* Profile Section */}
       <div className="p-4 border-b border-gray-800">
         <div className="flex items-center space-x-2">
-          <h2 className="text-lg font-medium">Marcel</h2>
+          <Link to='/'>
+          <h2 className="text-lg font-medium">AgriOk</h2>
+          </Link>
           <button 
             onClick={() => setToggleLogout(!toggleLogout)}
             className="text-gray-400 hover:text-white"
