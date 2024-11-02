@@ -27,6 +27,7 @@ import AdminListProductsPage from './pages/AdminListProductsPage'
 import FarmerCreateTrendingPage from './pages/FarmerCreateTrendingPage'
 import EditProductForm from './pages/AdminEditProductPage'
 import SingleTrendingPage from './pages/SingleTrendingPage'
+import NotFoundPage from './pages/NotFoundPage'
 
 const App = () => {
   const router = createBrowserRouter(
@@ -44,6 +45,7 @@ const App = () => {
         </Route>
         <Route path='/login' element={<LoginPage/>}/>
         <Route path='/register' element={<RegisterPage/>}/>
+        <Route path='*' element={<NotFoundPage/>}/>
 
         <Route path='' element={<AdminLayout/>}>
           <Route path='/admin' element={<AdminHomePage/>}/>

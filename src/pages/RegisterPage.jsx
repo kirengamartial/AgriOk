@@ -1,7 +1,55 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useRegisterMutation } from '../slices/userSlices/userApiSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { getCredentials } from '../slices/userSlices/authSlice';
 
 const RegisterPage = () => {
+  const [register, { isLoading }] = useRegisterMutation();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const {userInfo} = useSelector(state => state.auth)
+
+  useEffect(() => {
+    if(userInfo) {
+      navigate('/')
+    }
+  },[userInfo])
+
+  const [formData, setFormData] = useState({
+    first_name: '',
+    last_name: '',
+    email: '',
+    password: '',
+    phone_number: '',
+    city: '',
+    postal_code: '',
+    country: ''
+  });
+  const [error, setError] = useState('');
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prevState => ({
+      ...prevState,
+      [name]: value
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError('');
+
+    try {
+      const res = await register(formData).unwrap();
+      dispatch(getCredentials({ ...res }));
+      navigate('/');
+    } catch (err) {
+      setError(err?.data?.message || 'Registration failed. Please try again.');
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col py-12 px-4 sm:px-6 lg:px-8">
       {/* Home Icon */}
@@ -20,20 +68,34 @@ const RegisterPage = () => {
             <h2 className="text-2xl font-semibold text-center text-gray-900">REGISTER</h2>
           </div>
 
-          <form className="space-y-4">
+          {error && (
+            <div className="mb-4 p-2 text-red-500 text-sm text-center bg-red-50 rounded">
+              {error}
+            </div>
+          )}
+
+          <form onSubmit={handleSubmit} className="space-y-4">
             {/* Name Fields */}
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <input
                   type="text"
+                  name="first_name"
+                  value={formData.first_name}
+                  onChange={handleChange}
                   placeholder="First name"
+                  required
                   className="w-full px-3 py-2 border border-gray-200 rounded-md text-sm focus:outline-none focus:border-black"
                 />
               </div>
               <div>
                 <input
                   type="text"
+                  name="last_name"
+                  value={formData.last_name}
+                  onChange={handleChange}
                   placeholder="Last name"
+                  required
                   className="w-full px-3 py-2 border border-gray-200 rounded-md text-sm focus:outline-none focus:border-black"
                 />
               </div>
@@ -43,7 +105,11 @@ const RegisterPage = () => {
             <div>
               <input
                 type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
                 placeholder="Email"
+                required
                 className="w-full px-3 py-2 border border-gray-200 rounded-md text-sm focus:outline-none focus:border-black"
               />
             </div>
@@ -52,51 +118,48 @@ const RegisterPage = () => {
             <div>
               <input
                 type="password"
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
                 placeholder="Password"
+                required
                 className="w-full px-3 py-2 border border-gray-200 rounded-md text-sm focus:outline-none focus:border-black"
               />
-            </div>
-
-            {/* Gender Fields */}
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <input
-                  type="text"
-                  placeholder="Gender"
-                  className="w-full px-3 py-2 border border-gray-200 rounded-md text-sm focus:outline-none focus:border-black"
-                />
-              </div>
-              <div>
-                <input
-                  type="text"
-                  placeholder="Day"
-                  className="w-full px-3 py-2 border border-gray-200 rounded-md text-sm focus:outline-none focus:border-black"
-                />
-              </div>
             </div>
 
             {/* Phone Number */}
             <div>
               <input
                 type="tel"
+                name="phone_number"
+                value={formData.phone_number}
+                onChange={handleChange}
                 placeholder="Phone Number"
+                required
                 className="w-full px-3 py-2 border border-gray-200 rounded-md text-sm focus:outline-none focus:border-black"
               />
             </div>
 
-            {/* State Fields */}
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <input
                   type="text"
-                  placeholder="State"
+                  name="city"
+                  value={formData.city}
+                  onChange={handleChange}
+                  placeholder="City"
+                  required
                   className="w-full px-3 py-2 border border-gray-200 rounded-md text-sm focus:outline-none focus:border-black"
                 />
               </div>
               <div>
                 <input
                   type="text"
+                  name="postal_code"
+                  value={formData.postal_code}
+                  onChange={handleChange}
                   placeholder="Postal code"
+                  required
                   className="w-full px-3 py-2 border border-gray-200 rounded-md text-sm focus:outline-none focus:border-black"
                 />
               </div>
@@ -106,29 +169,22 @@ const RegisterPage = () => {
             <div>
               <input
                 type="text"
+                name="country"
+                value={formData.country}
+                onChange={handleChange}
                 placeholder="Country"
+                required
                 className="w-full px-3 py-2 border border-gray-200 rounded-md text-sm focus:outline-none focus:border-black"
               />
-            </div>
-
-            {/* Terms Checkbox */}
-            <div className="flex items-center">
-              <input
-                type="checkbox"
-                id="terms"
-                className="h-4 w-4 text-black focus:ring-black border-gray-300 rounded"
-              />
-              <label htmlFor="terms" className="ml-2 block text-sm text-gray-700">
-                Register as a farmer
-              </label>
             </div>
 
             {/* Register Button */}
             <button
               type="submit"
-              className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-black hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black"
+              disabled={isLoading}
+              className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-black hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black disabled:opacity-50"
             >
-              REGISTER
+              {isLoading ? 'Registering...' : 'REGISTER'}
             </button>
 
             {/* Additional Links */}
