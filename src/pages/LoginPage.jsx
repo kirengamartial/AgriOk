@@ -42,7 +42,6 @@ const LoginPage = () => {
         email: formData.email,
         password: formData.password
       }).unwrap();
-      
       dispatch(getCredentials({ ...res }));
       toast.success('Login successfully')
       navigate('/');

@@ -28,6 +28,7 @@ import FarmerCreateTrendingPage from './pages/FarmerCreateTrendingPage'
 import EditProductForm from './pages/AdminEditProductPage'
 import SingleTrendingPage from './pages/SingleTrendingPage'
 import NotFoundPage from './pages/NotFoundPage'
+import AccountPage from './pages/profilePage'
 
 const App = () => {
   const router = createBrowserRouter(
@@ -42,6 +43,7 @@ const App = () => {
           <Route path='/product/:id' element={<SingleProductPage/>}/>
           <Route path='/cart' element={<CartPage/>}/>
           <Route path='/checkout' element={<CheckoutPage/>}/>
+          <Route path='/profile' element={<AccountPage/>}/>
         </Route>
         <Route path='/login' element={<LoginPage/>}/>
         <Route path='/register' element={<RegisterPage/>}/>
