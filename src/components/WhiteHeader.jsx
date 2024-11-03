@@ -1,12 +1,28 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { Menu, X, ChevronDown } from 'lucide-react';
+import { useLogoutMutation } from '../slices/userSlices/userApiSlice';
+import { logOut } from '../slices/userSlices/authSlice';
+import { useDispatch } from 'react-redux';
 
 const WhiteHeader = () => {
   const {userInfo} = useSelector(state => state.auth);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const [logout] = useLogoutMutation();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    try {
+      dispatch(logOut());
+      setIsProfileOpen(false);
+      navigate('/login');
+    } catch (error) {
+      console.error('Logout failed:', error);
+    }
+  };
 
   return (
     <header className="bg-white w-full">
@@ -30,7 +46,7 @@ const WhiteHeader = () => {
                 <Link to="/trending" className="text-gray-600 hover:text-gray-900">
                   Trending
                 </Link>
-                {userInfo?.role === 'admin' && (
+                {userInfo?.isAdmin === true && (
                   <Link to="/admin" className="text-gray-600 hover:text-gray-900">
                     Admin Dashboard
                   </Link>
@@ -44,7 +60,6 @@ const WhiteHeader = () => {
             </div>
 
             <div className="flex items-center">
-              {/* Mobile menu button */}
               <button
                 className="md:hidden mr-4 text-gray-600"
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -54,13 +69,13 @@ const WhiteHeader = () => {
 
               {userInfo ? (
                 <div className="relative">
-                  <div
+                  <button
                     onClick={() => setIsProfileOpen(!isProfileOpen)}
                     className="flex items-center cursor-pointer"
                   >
                     <span className="text-sm text-gray-600">{userInfo.first_name}</span>
                     <ChevronDown className="ml-1" size={16} />
-                  </div>
+                  </button>
                   
                   {isProfileOpen && (
                     <div className="absolute right-0 top-full mt-2 w-48 bg-white border rounded-md shadow-lg z-50">
@@ -72,11 +87,8 @@ const WhiteHeader = () => {
                         Profile
                       </Link>
                       <button 
+                        onClick={handleLogout}
                         className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                        onClick={() => {
-                          // Add your logout logic here
-                          setIsProfileOpen(false);
-                        }}
                       >
                         Logout
                       </button>
@@ -94,7 +106,6 @@ const WhiteHeader = () => {
           </div>
         </div>
 
-        {/* Mobile menu */}
         {isMenuOpen && (
           <div className="md:hidden border-t">
             <div className="px-4 py-2 space-y-2">
@@ -124,7 +135,7 @@ const WhiteHeader = () => {
           </div>
         )}
     </header>
-  )
-}
+  );
+};
 
-export default WhiteHeader
+export default WhiteHeader;

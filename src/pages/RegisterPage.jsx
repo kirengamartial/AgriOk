@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useRegisterMutation } from '../slices/userSlices/userApiSlice';
-import { useDispatch, useSelector } from 'react-redux';
-import { getCredentials } from '../slices/userSlices/authSlice';
+import { LoaderCircle } from 'lucide-react';
+import { useSelector } from 'react-redux';
+import toast from 'react-hot-toast';
 
 const RegisterPage = () => {
   const [register, { isLoading }] = useRegisterMutation();
-  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const {userInfo} = useSelector(state => state.auth)
@@ -43,10 +43,13 @@ const RegisterPage = () => {
 
     try {
       const res = await register(formData).unwrap();
-      dispatch(getCredentials({ ...res }));
-      navigate('/');
+      toast.success('Register successful', {
+        duration: 4000,
+        position: 'top-center',
+      });
+      navigate('/login');
     } catch (err) {
-      setError(err?.data?.message || 'Registration failed. Please try again.');
+      setError(err?.data?.non_field_errors ||  err?.data?.email || 'Registration failed. Please try again.');
     }
   };
 
@@ -184,7 +187,7 @@ const RegisterPage = () => {
               disabled={isLoading}
               className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-black hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black disabled:opacity-50"
             >
-              {isLoading ? 'Registering...' : 'REGISTER'}
+              {isLoading ? <LoaderCircle className="animate-spin h-6 w-6" /> : 'Sign Up'}
             </button>
 
             {/* Additional Links */}
