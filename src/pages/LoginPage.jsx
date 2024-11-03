@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useLoginMutation } from '../slices/userSlices/userApiSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCredentials } from '../slices/userSlices/authSlice';
+import toast from 'react-hot-toast';
 
 const LoginPage = () => {
   const [login, { isLoading }] = useLoginMutation();
@@ -43,9 +44,10 @@ const LoginPage = () => {
       }).unwrap();
       
       dispatch(getCredentials({ ...res }));
+      toast.success('Login successfully')
       navigate('/');
     } catch (err) {
-      setError(err?.data?.message || 'Invalid email or password');
+      setError(err?.data?.message || 'Something is wrong');
     }
   };
 
