@@ -3,12 +3,24 @@ import { Link, useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { FaChevronDown } from "react-icons/fa";
+import { logOut } from "../../slices/userSlices/authSlice";
+import { useLogoutMutation } from "../../slices/userSlices/userApiSlice";
 
 const AppAside = () => {
   const location = useLocation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [toggleLogout, setToggleLogout] = useState(false);
+  const [logout] = useLogoutMutation()
+
+  const handleLogout = async() => {
+    try {
+      dispatch(logOut())
+      navigate('/login')
+    } catch (error) {
+      console.log(error)
+    }
+    }
 
   return (
     <aside className="h-screen w-60 bg-[#1a1a1a] text-white flex flex-col">
@@ -32,9 +44,7 @@ const AppAside = () => {
             <div className="py-1">
               <button
                 className="block w-full text-left px-4 py-2 text-sm text-gray-300 hover:bg-gray-700"
-                onClick={() => {
-                  // Add your logout logic here
-                }}
+                onClick={handleLogout}
               >
                 Sign out
               </button>
@@ -54,7 +64,7 @@ const AppAside = () => {
           </p>
           <nav className="mt-3 space-y-1">
             <Link
-              to="/farmer"
+              to="/dashboard/farmer"
               className="flex items-center px-3 py-2 text-sm text-gray-300 rounded-md hover:bg-gray-800 hover:text-white"
             >
               <span className="inline-block w-5 h-5 mr-3">📊</span>
@@ -69,7 +79,7 @@ const AppAside = () => {
           </p>
           <nav className="mt-3 space-y-1">
             <Link
-              to="/farmer/trending/create"
+              to="/dashboard/farmer/trending/create"
               className="flex items-center px-3 py-2 text-sm text-gray-300 rounded-md hover:bg-gray-800 hover:text-white"
             >
               <span className="inline-block w-5 h-5 mr-3">•</span>

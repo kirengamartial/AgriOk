@@ -29,6 +29,8 @@ import EditProductForm from './pages/AdminEditProductPage'
 import SingleTrendingPage from './pages/SingleTrendingPage'
 import NotFoundPage from './pages/NotFoundPage'
 import AccountPage from './pages/profilePage'
+import ProtectedRoutes from './layouts/ProtectedRoutes'
+import ProtectedAdminRoutes from './layouts/ProtectedAdminRoutes'
 
 const App = () => {
   const router = createBrowserRouter(
@@ -49,16 +51,20 @@ const App = () => {
         </Route>
         <Route path='*' element={<NotFoundPage/>}/>
 
+        <Route path='/dashboard' element={<ProtectedAdminRoutes/>}> 
         <Route path='' element={<AdminLayout/>}>
-          <Route path='/admin' element={<AdminHomePage/>}/>
-          <Route path='/admin/product/create' element={<AdminCreateProductPage/>}/>
-          <Route path='/admin/product/list' element={<AdminListProductsPage/>}/>
-          <Route path='/admin/product/edit/:id' element={<EditProductForm/>}/>
+          <Route path='admin' element={<AdminHomePage/>}/>
+          <Route path='admin/product/create' element={<AdminCreateProductPage/>}/>
+          <Route path='admin/product/list' element={<AdminListProductsPage/>}/>
+          <Route path='admin/product/edit/:id' element={<EditProductForm/>}/>
+        </Route>
         </Route>
 
+        <Route path='/dashboard' element={<ProtectedRoutes/>}>
         <Route path='' element={<FarmerLayout/>}>
-          <Route path='/farmer' element={<FarmerHomePage/>}/>
-          <Route path='/farmer/trending/create' element={<FarmerCreateTrendingPage/>}/>
+          <Route path='farmer' element={<FarmerHomePage/>}/>
+          <Route path='farmer/trending/create' element={<FarmerCreateTrendingPage/>}/>
+        </Route>
         </Route>
       </>
     )

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { User } from 'lucide-react';
 import heroImage from '../../public/Section.png'
 import { useGetProfileQuery } from '../slices/userSlices/userApiSlice';
-import { useUpdateProfileMutation } from '../slices/userSlices/userApiSlice';
+import { useUpdateProfileMutation, useUpdatePasswordMutation } from '../slices/userSlices/userApiSlice';
 import { updateUserInfo } from '../slices/userSlices/authSlice';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -12,6 +12,7 @@ import { LoaderCircle } from 'lucide-react';
 const AccountPage = () => {
   const {data: profile, refetch} = useGetProfileQuery()
   const [update, {isLoading}] = useUpdateProfileMutation()
+  const [updatePassword, {isLoading: isLoadingPassword}] = useUpdatePasswordMutation()
   const dispatch = useDispatch()
   const navigate = useNavigate()
   
@@ -59,6 +60,50 @@ const AccountPage = () => {
     }
   };
 
+  
+  const [formPasswordData, setFormPasswordData] = useState({
+    oldPassword: '',
+    newPassword: ''
+  });
+
+  const handlePasswordChange = (e) => {
+    const { name, value } = e.target;
+    setFormPasswordData(prevState => ({ 
+      ...prevState,
+      [name]: value
+    }));
+  };
+
+  const handleChangePassword = async (e) => {
+    e.preventDefault();
+    
+    if (!formPasswordData.oldPassword || !formPasswordData.newPassword) {
+      toast.error('Please fill in all fields');
+      return;
+    }
+
+    try {
+      await updatePassword({
+        old_password: formPasswordData.oldPassword,
+        new_password: formPasswordData.newPassword
+      }).unwrap();
+
+      toast.success('Password updated successfully');
+   
+      setFormPasswordData({
+        oldPassword: '',
+        newPassword: ''
+      });
+    } catch (err) {
+      toast.error(
+        err?.data?.message || 
+        err?.data?.old_password || 
+        err?.data?.new_password || 
+        'Failed to update password'
+      );
+    }
+  };
+ 
   return (
     <>
     <div className="relative h-64">
@@ -186,7 +231,7 @@ const AccountPage = () => {
           </form>
 
           {/* Change Password */}
-          <div className="bg-white p-6 rounded-lg shadow-sm">
+          <form onSubmit={handleChangePassword} className="bg-white p-6 rounded-lg shadow-sm">
             <h2 className="text-lg font-medium mb-4">Change Password</h2>
             <div className="space-y-4">
               <div>
@@ -194,8 +239,8 @@ const AccountPage = () => {
                 <input
                   type="password"
                   name="oldPassword"
-                  value={formData.oldPassword}
-                  onChange={handleChange}
+                  value={formPasswordData.oldPassword}
+                  onChange={handlePasswordChange}
                   className="w-full px-3 py-2 border rounded-md"
                   placeholder="Enter old password"
                 />
@@ -205,17 +250,20 @@ const AccountPage = () => {
                 <input
                   type="password"
                   name="newPassword"
-                  value={formData.newPassword}
-                  onChange={handleChange}
+                  value={formPasswordData.newPassword}
+                  onChange={handlePasswordChange}
                   className="w-full px-3 py-2 border rounded-md"
                   placeholder="Enter new password"
                 />
               </div>
-              <button className="w-full bg-green-500 text-white py-2 rounded-md hover:bg-green-600">
-                Change Password
+              <button
+                disabled={isLoadingPassword}
+                type='submit'
+                className="w-full bg-green-500 text-white py-2 rounded-md hover:bg-green-600 flex items-center justify-center">
+                  {isLoadingPassword ? <LoaderCircle className="animate-spin h-6 w-6" /> : 'Change password'}
               </button>
             </div>
-          </div>
+          </form>
         </div>
       </div>
     </div>

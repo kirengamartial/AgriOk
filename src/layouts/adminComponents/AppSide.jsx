@@ -3,6 +3,8 @@ import { Link, useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { FaChevronDown } from "react-icons/fa";
+import { useLogoutMutation } from "../../slices/userSlices/userApiSlice";
+import { logOut } from "../../slices/userSlices/authSlice";
 
 const AppAside = () => {
   const location = useLocation();
@@ -10,7 +12,16 @@ const AppAside = () => {
   const navigate = useNavigate();
   const [toggleLogout, setToggleLogout] = useState(false);
   const [toggleProducts, setToggleProducts] = useState(true);
+  const [logout] = useLogoutMutation()
 
+  const handleLogout = async() => {
+  try {
+    dispatch(logOut())
+    navigate('/login')
+  } catch (error) {
+    console.log(error)
+  }
+  }
   return (
     <aside className="h-screen w-60 bg-[#1a1a1a] text-white flex flex-col">
       {/* Profile Section */}
@@ -33,9 +44,7 @@ const AppAside = () => {
             <div className="py-1">
               <button
                 className="block w-full text-left px-4 py-2 text-sm text-gray-300 hover:bg-gray-700"
-                onClick={() => {
-                  // Add your logout logic here
-                }}
+                onClick={handleLogout}
               >
                 Sign out
               </button>
@@ -48,7 +57,7 @@ const AppAside = () => {
       <div className="flex-1 overflow-y-auto">
         {/* Dashboard Section */}
         <div className="px-3 py-4">
-          <Link to='/admin'> 
+          <Link to='/dashboard/admin'> 
           <p className="px-3 text-xs font-semibold text-gray-300 uppercase tracking-wider">
             Dashboard
           </p>
@@ -77,9 +86,9 @@ const AppAside = () => {
           {toggleProducts && (
             <nav className="mt-3 space-y-1 pl-3">
               <Link
-                to="/admin/product/list"
+                to="/dashboard/admin/product/list"
                 className={`flex items-center px-3 py-2 text-sm rounded-md transition-colors ${
-                  location.pathname === '/admin/product/list'
+                  location.pathname === '/dashboard/admin/product/list'
                     ? 'bg-gray-800 text-white'
                     : 'text-gray-300 hover:bg-gray-800 hover:text-white'
                 }`}
@@ -88,9 +97,9 @@ const AppAside = () => {
                 List
               </Link>
               <Link
-                to="/admin/product/create"
+                to="/dashboard/admin/product/create"
                 className={`flex items-center px-3 py-2 text-sm rounded-md transition-colors ${
-                  location.pathname === '/admin/product/create'
+                  location.pathname === '/dashboard/admin/product/create'
                     ? 'bg-gray-800 text-white'
                     : 'text-gray-300 hover:bg-gray-800 hover:text-white'
                 }`}

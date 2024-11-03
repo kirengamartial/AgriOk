@@ -47,13 +47,13 @@ const WhiteHeader = () => {
                 <Link to="/trending" className="text-gray-600 hover:text-gray-900">
                   Trending
                 </Link>
-                {userInfo?.isAdmin === true && (
-                  <Link to="/admin" className="text-gray-600 hover:text-gray-900">
-                    Admin Dashboard
+                {userInfo && userInfo?.isAdmin === true && (
+                  <Link to="/dashboard/admin" className="text-gray-600 hover:text-gray-900">
+                    Dashboard
                   </Link>
                 )}
-                {userInfo && (
-                  <Link to="/farmer" className="text-gray-600 hover:text-gray-900">
+                {userInfo && userInfo?.isAdmin === false && (
+                  <Link to="/dashboard/farmer" className="text-gray-600 hover:text-gray-900">
                      Dashboard
                   </Link>
                 )}
@@ -123,13 +123,13 @@ const WhiteHeader = () => {
                 Trending
               </Link>
               {userInfo?.role === 'admin' && (
-                <Link to="/admin" className="block text-sm text-gray-600 hover:text-gray-900 py-2">
-                  Admin Dashboard
+                <Link to="/dashboard/admin" className="block text-sm text-gray-600 hover:text-gray-900 py-2">
+                  Dashboard
                 </Link>
               )}
               {userInfo?.role === 'farmer' && (
-                <Link to="/farmer" className="block text-sm text-gray-600 hover:text-gray-900 py-2">
-                  Farmer Dashboard
+                <Link to="/dashboard/farmer" className="block text-sm text-gray-600 hover:text-gray-900 py-2">
+                  Dashboard
                 </Link>
               )}
             </div>
