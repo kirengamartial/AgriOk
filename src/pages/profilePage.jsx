@@ -2,23 +2,30 @@ import React, { useState, useEffect } from 'react';
 import { User } from 'lucide-react';
 import heroImage from '../../public/Section.png'
 import { useGetProfileQuery } from '../slices/userSlices/userApiSlice';
+import { useUpdateProfileMutation } from '../slices/userSlices/userApiSlice';
+import { updateUserInfo } from '../slices/userSlices/authSlice';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
+import { LoaderCircle } from 'lucide-react';
 
 const AccountPage = () => {
   const {data: profile, refetch} = useGetProfileQuery()
+  const [update, {isLoading}] = useUpdateProfileMutation()
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
   
   useEffect(() => {
     if(profile) {
-      // Update formData when profile data is received
       setFormData({
         first_name: profile.first_name || '',
         last_name: profile.last_name || '',
         phone_number: profile.phone_number || '',
         country: profile.country || '',
         city: profile.city || '',
-        postal_code: profile.postal_code || '',
-        oldPassword: '',
-        newPassword: ''
+        postal_code: profile.postal_code || ''
       });
+      refetch()
     }
   }, [profile])
 
@@ -28,9 +35,7 @@ const AccountPage = () => {
     phone_number: '',
     country: '',
     city: '',
-    postal_code: '',
-    oldPassword: '',
-    newPassword: ''
+    postal_code: ''
   });
 
   const handleChange = (e) => {
@@ -41,10 +46,16 @@ const AccountPage = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
-    // Add your submit logic here
-    console.log(formData);
+    try {
+      const res = await update(formData).unwrap()
+      toast.success('Edited successfully')
+      dispatch(updateUserInfo(res.first_name))
+      navigate('/')
+    } catch (error) {
+      console.log(error)
+    }
   };
 
   return (
@@ -167,9 +178,9 @@ const AccountPage = () => {
                   />
                 </div>
               </div>
-              <button type="submit" className="mt-6 w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600">
-                Save Changes
-              </button>
+              <button type="submit" className="mt-6 w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 flex items-center justify-center">
+         {isLoading ? <LoaderCircle className="animate-spin h-6 w-6" /> : 'Save changes'}
+            </button>
             </div>
           </form>
 
