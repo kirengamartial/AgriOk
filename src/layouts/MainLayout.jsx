@@ -1,16 +1,16 @@
-import React from 'react'
-import { Outlet, useLocation } from 'react-router-dom'
-import { Toaster } from 'react-hot-toast'
-import BlackHeader from '../components/BlackHeader'
-import WhiteHeader from '../components/WhiteHeader'
-import Footer from '../components/Footer'
+import React from 'react';
+import { Outlet, useLocation } from 'react-router-dom';
+import { Toaster } from 'react-hot-toast';
+import BlackHeader from '../components/BlackHeader';
+import WhiteHeader from '../components/WhiteHeader';
+import Footer from '../components/Footer';
 
 const MainLayout = () => {
-  const location = useLocation()
- 
+  const location = useLocation();
+  const isAuthPage = ['/login', '/register'].includes(location.pathname);
+
   return (
     <>
-      <BlackHeader/>
       <Toaster 
         position="top-center"
         toastOptions={{
@@ -37,11 +37,19 @@ const MainLayout = () => {
           },
         }}
       />
-      <WhiteHeader/>
-      <Outlet/>
-      <Footer/>
+      
+      {!isAuthPage && (
+        <>
+          <BlackHeader />
+          <WhiteHeader />
+        </>
+      )}
+      
+      <Outlet />
+      
+      {!isAuthPage && <Footer />}
     </>
-  )
-}
+  );
+};
 
-export default MainLayout
+export default MainLayout;

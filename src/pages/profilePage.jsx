@@ -50,8 +50,9 @@ const AccountPage = () => {
     e.preventDefault();
     try {
       const res = await update(formData).unwrap()
+      console.log(res.first_name)
       toast.success('Edited successfully')
-      dispatch(updateUserInfo(res.first_name))
+      dispatch(updateUserInfo({first_name: res.first_name}))
       navigate('/')
     } catch (error) {
       console.log(error)
@@ -179,7 +180,7 @@ const AccountPage = () => {
                 </div>
               </div>
               <button type="submit" className="mt-6 w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 flex items-center justify-center">
-         {isLoading ? <LoaderCircle className="animate-spin h-6 w-6" /> : 'Save changes'}
+               {isLoading ? <LoaderCircle className="animate-spin h-6 w-6" /> : 'Save changes'}
             </button>
             </div>
           </form>
