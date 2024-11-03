@@ -16,6 +16,7 @@ const WhiteHeader = () => {
 
   const handleLogout = async () => {
     try {
+      await logout().unwrap()
       dispatch(logOut());
       setIsProfileOpen(false);
       navigate('/login');
@@ -51,9 +52,9 @@ const WhiteHeader = () => {
                     Admin Dashboard
                   </Link>
                 )}
-                {userInfo?.role === 'farmer' && (
+                {userInfo && (
                   <Link to="/farmer" className="text-gray-600 hover:text-gray-900">
-                    Farmer Dashboard
+                     Dashboard
                   </Link>
                 )}
               </nav>

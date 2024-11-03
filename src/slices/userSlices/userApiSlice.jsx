@@ -22,11 +22,18 @@ export const userApiSlice = apiSlice.injectEndpoints({
                 method: 'POST'
             })
         }),
+        getProfile: builder.query({
+            query: () => ({
+                url: `/profile`,
+                method: 'GET'
+            })
+        }),
     })
 })
 
 export const {
     useRegisterMutation,
     useLoginMutation,
-    useLogoutMutation
+    useLogoutMutation,
+    useGetProfileQuery
 } = userApiSlice
