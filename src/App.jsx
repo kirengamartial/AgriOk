@@ -2,6 +2,7 @@ import React from 'react'
 import {
    Route,
    createBrowserRouter,
+   createHashRouter,
    createRoutesFromElements,
    RouterProvider
 
@@ -33,7 +34,7 @@ import ProtectedRoutes from './layouts/ProtectedRoutes'
 import ProtectedAdminRoutes from './layouts/ProtectedAdminRoutes'
 
 const App = () => {
-  const router = createBrowserRouter(
+  const router = createHashRouter(
     createRoutesFromElements(
       <>
         <Route path='/' element={<MainLayout/>}>
