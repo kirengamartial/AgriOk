@@ -47,7 +47,8 @@ const LoginPage = () => {
       toast.success('Login successfully')
       navigate('/');
     } catch (err) {
-      setError(err?.data?.message || 'Something is wrong');
+      console.log(err)
+      setError(err?.data?.non_field_errors || 'Something is wrong');
     }
   };
 
