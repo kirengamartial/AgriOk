@@ -74,6 +74,13 @@ export const userApiSlice = apiSlice.injectEndpoints({
                 method: 'GET'
             })
         }),
+        createCart: builder.mutation({
+            query: (data) => ({
+                url: `/cart/add`,
+                method: 'POST',
+                body: data
+            })
+        }),
     })
 })
 
@@ -88,5 +95,6 @@ export const {
     useGetProductsQuery,
     useDeleteProductMutation,
     useUpdateProductMutation,
-    useGetProductQuery
+    useGetProductQuery,
+    useCreateCartMutation
 } = userApiSlice

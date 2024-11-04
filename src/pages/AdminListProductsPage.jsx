@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Pencil, Trash2 } from 'lucide-react';
+import { LoaderCircle, Pencil, Trash2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useGetProductsQuery, useDeleteProductMutation } from '../slices/userSlices/userApiSlice';
 import toast from 'react-hot-toast';
 
 const ProductList = () => {
   const {data: Products, refetch} = useGetProductsQuery()
-  const [deleteProduct] = useDeleteProductMutation()
+  const [deleteProduct, {isLoading}] = useDeleteProductMutation()
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
 
@@ -49,7 +49,11 @@ const ProductList = () => {
       </div>
 
       <div className="bg-white rounded-lg shadow">
+              {isLoading && <div className="flex justify-center  items-center h-full w-full">
+                 <LoaderCircle className="animate-spin h-12 w-12" />
+              </div>}
         <table className="w-full">
+       
           <thead>
             <tr className="border-b">
               
@@ -58,6 +62,7 @@ const ProductList = () => {
               <th className="text-left p-4">Action</th>
             </tr>
           </thead>
+          
           <tbody>
             {Products && currentItems.map((product) => (
               <tr key={product.id} className="border-b hover:bg-gray-50">
@@ -65,12 +70,12 @@ const ProductList = () => {
                 <td className="p-4">
                   <div className="flex items-center gap-3">
                     <img
-                      src={product.photo}
+                      src={product.name}
                       alt={product.name}
                       className="w-12 h-12 rounded-lg"
                     />
                     <div>
-                      <div className="font-medium">{product.name}</div>
+                      <div className="font-medium">{product.photo}</div>
                       
                     </div>
                   </div>

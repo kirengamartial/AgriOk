@@ -1,9 +1,10 @@
-import React, { useState, useMemo } from 'react';
-import product1 from '../../public/product-2-550x550.jpg.png'
-import product2 from '../../public/product-3-550x550.jpg.png'
-import product3 from '../../public/product-4-550x550.jpg.png'
-import product4 from '../../public/product-5-550x550.jpg.png'
-import heroImage from '../../public/Section.png'
+import React, { useState, useMemo, useEffect } from 'react';
+import product1 from '../../public/product-2-550x550.jpg.png';
+import product2 from '../../public/product-3-550x550.jpg.png';
+import product3 from '../../public/product-4-550x550.jpg.png';
+import product4 from '../../public/product-5-550x550.jpg.png';
+import heroImage from '../../public/Section.png';
+import { useGetProductsQuery } from '../slices/userSlices/userApiSlice';
 import { Link } from 'react-router-dom';
 
 // Extended products array with more items
@@ -85,32 +86,35 @@ const products = [
 const ITEMS_PER_PAGE = 6;
 
 const ShopPage = () => {
+  const { data: Products = [], refetch } = useGetProductsQuery();
   const [currentPage, setCurrentPage] = useState(1);
   const [sortOption, setSortOption] = useState('default');
 
+  useEffect(() => {
+    if (Products.length) {
+      refetch();
+    }
+  }, [Products, refetch]);
+
   // Sort products based on selected option
   const sortedProducts = useMemo(() => {
-    let sorted = [...products];
+    let sorted = [...Products];
     switch (sortOption) {
       case 'price-low':
         return sorted.sort((a, b) => a.price - b.price);
       case 'price-high':
         return sorted.sort((a, b) => b.price - a.price);
       case 'popularity':
-        // In a real app, you'd have a popularity metric
-        return sorted;
+        return sorted; // Placeholder for a popularity sort
       default:
         return sorted;
     }
-  }, [sortOption]);
+  }, [sortOption, Products]);
 
   // Calculate pagination
-  const totalPages = Math.ceil(sortedProducts.length / ITEMS_PER_PAGE);
+  const totalPages = Math.ceil(Products.length / ITEMS_PER_PAGE);
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-  const paginatedProducts = sortedProducts.slice(
-    startIndex,
-    startIndex + ITEMS_PER_PAGE
-  );
+  const paginatedProducts = sortedProducts.slice(startIndex, startIndex + ITEMS_PER_PAGE);
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
@@ -123,15 +127,15 @@ const ShopPage = () => {
   };
 
   return (
-    <div className=" min-h-screen bg-white">
+    <div className="min-h-screen bg-white">
       {/* Hero Section */}
-      <div className=" relative h-64">
+      <div className="relative h-64">
         {/* Background Image */}
         <div 
-          className=" absolute inset-0 bg-cover bg-center"
+          className="absolute inset-0 bg-cover bg-center"
           style={{ backgroundImage: `url(${heroImage})` }}
         >
-          <div className=" absolute inset-0 bg-black/40"></div>
+          <div className="absolute inset-0 bg-black/40"></div>
         </div>
         
         {/* Shop Text */}
@@ -140,7 +144,7 @@ const ShopPage = () => {
         </div>
 
         {/* Navigation Bar */}
-        <div className=" absolute bottom-0 left-0 right-0 bg-white">
+        <div className="absolute bottom-0 left-0 right-0 bg-white">
           <div className="max-w-5xl mx-auto">
             <div className="flex items-center h-12 px-4">
               <span className="text-gray-600 text-xs">Home</span>
@@ -156,36 +160,27 @@ const ShopPage = () => {
         {/* Header Info */}
         <div className="flex justify-between items-center mb-8">
           <p className="text-gray-500 text-sm">
-            Showing {startIndex + 1}–{Math.min(startIndex + ITEMS_PER_PAGE, sortedProducts.length)} of {sortedProducts.length} results
+            Showing {startIndex + 1}–{Math.min(startIndex + ITEMS_PER_PAGE, Products.length)} of {Products.length} results
           </p>
-          <select 
-            className="border rounded px-4 py-2 text-sm text-gray-600"
-            onChange={handleSortChange}
-            value={sortOption}
-          >
-            <option value="default">Default sorting</option>
-            <option value="price-low">Sort by price: low to high</option>
-            <option value="price-high">Sort by price: high to low</option>
-            <option value="popularity">Sort by popularity</option>
-          </select>
+        
         </div>
 
         {/* Products grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12">
           {paginatedProducts.map((product) => (
-            <Link to={`/product/${product.id}`}>
-            <div key={product.id} className="group">
-              <div className="mb-4 overflow-hidden bg-gray-50">
-                <img
-                  src={product.image}
-                  alt={product.name}
-                  className="w-52 h-auto object-contain p-4 group-hover:scale-105 transition-transform duration-300"
-                />
+            <Link to={`/product/${product.id}`} key={product.id}>
+              <div className="group">
+                <div className="mb-4 overflow-hidden bg-gray-50">
+                  <img
+                    src={product.name}
+                    alt={product.name}
+                    className="w-52 h-auto object-contain p-4 group-hover:scale-105 transition-transform duration-300"
+                  />
+                </div>
+                <div className="text-xs text-gray-500 mb-2">category</div>
+                <h3 className="text-sm font-medium text-gray-900 mb-1">product name</h3>
+                <div className="text-sm text-gray-900">$ {product.price}</div>
               </div>
-              <div className="text-xs text-gray-500 mb-2">{product.category}</div>
-              <h3 className="text-sm font-medium text-gray-900 mb-1">{product.name}</h3>
-              <div className="text-sm text-gray-900">{product.priceDisplay}</div>
-            </div>
             </Link>
           ))}
         </div>
