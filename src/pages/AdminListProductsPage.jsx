@@ -1,106 +1,39 @@
-import React, { useState } from 'react';
-import { Eye, Pencil, Trash2, Star } from 'lucide-react';
-import product1 from '../../public/product-2-550x550.jpg.png'
-import product2 from '../../public/product-3-550x550.jpg.png'
-import product3 from '../../public/product-4-550x550.jpg.png'
-import product4 from '../../public/product-5-550x550.jpg.png'
+import React, { useEffect, useState } from 'react';
+import { Pencil, Trash2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useGetProductsQuery, useDeleteProductMutation } from '../slices/userSlices/userApiSlice';
+import toast from 'react-hot-toast';
 
 const ProductList = () => {
+  const {data: Products, refetch} = useGetProductsQuery()
+  const [deleteProduct] = useDeleteProductMutation()
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
 
-  // Sample product data
-  const products = [
-    {
-      id: 1,
-      name: 'Orange',
-      size: 'S, M, L, XL',
-      price: 80.00,
-      itemsLeft: 486,
-      sold: 155,
-      category: 'Fashion',
-      rating: 4.5,
-      reviews: 55,
-      image: product1
-    },
-    {
-      id: 2,
-      name: 'Watermelon',
-      price: 136.00,
-      itemsLeft: 784,
-      sold: 674,
-      category: 'Hand Bag',
-      rating: 4.3,
-      reviews: 163,
-      image: product2
-    },
-    {
-      id: 3,
-      name: 'Orange',
-      price: 219.00,
-      itemsLeft: 769,
-      sold: 380,
-      category: 'Fashion',
-      rating: 4.4,
-      reviews: 174,
-      image: product3
-    },
-    {
-      id: 4,
-      name: 'Watermelon',
-      price: 76.00,
-      itemsLeft: 571,
-      sold: 87,
-      category: 'Cap',
-      rating: 4.2,
-      reviews: 23,
-      image: product4
-    },
-    {
-      id: 5,
-      name: 'Orange',
-      price: 110.00,
-      itemsLeft: 241,
-      sold: 342,
-      category: 'Fashion',
-      rating: 4.4,
-      reviews: 109,
-      image: product2
-    },
-    {
-      id: 6,
-      name: 'Watermelon',
-      price: 231.00,
-      itemsLeft: 821,
-      sold: 233,
-      category: 'Electronics',
-      rating: 4.2,
-      reviews: 200,
-      image: product1
-    },
-    {
-      id: 7,
-      name: 'Orange',
-      price: 89.00,
-      itemsLeft: 321,
-      sold: 681,
-      category: 'Shoes',
-      rating: 4.5,
-      reviews: 321,
-      image: product3
-    }
-  ];
-
-  // Calculate pagination
-  const totalPages = Math.ceil(products.length / itemsPerPage);
+  const totalPages = Products && Math.ceil(Products.length / itemsPerPage);
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = products.slice(indexOfFirstItem, indexOfLastItem);
+  const currentItems = Products && Products.slice(indexOfFirstItem, indexOfLastItem);
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
+
+  useEffect(() => {
+    if(Products) {
+      refetch()
+    }
+  } , [Products, refetch])
+
+  const handleDelete = async(id) => {
+   try {
+    await deleteProduct(id)
+    refetch()
+    toast.success('deleted successfully')
+   } catch (error) {
+    console.log(error)
+   }
+  }
 
   return (
     <div className="max-w-7xl mx-auto p-6">
@@ -122,41 +55,28 @@ const ProductList = () => {
               
               <th className="text-left p-4">Product Name</th>
               <th className="text-left p-4">Price</th>
-              <th className="text-left p-4">Stock</th>
               <th className="text-left p-4">Action</th>
             </tr>
           </thead>
           <tbody>
-            {currentItems.map((product) => (
+            {Products && currentItems.map((product) => (
               <tr key={product.id} className="border-b hover:bg-gray-50">
                 
                 <td className="p-4">
                   <div className="flex items-center gap-3">
                     <img
-                      src={product.image}
+                      src={product.photo}
                       alt={product.name}
                       className="w-12 h-12 rounded-lg"
                     />
                     <div>
                       <div className="font-medium">{product.name}</div>
-                      {product.size && (
-                        <div className="text-sm text-gray-500">
-                          Size: {product.size}
-                        </div>
-                      )}
+                      
                     </div>
                   </div>
                 </td>
-                <td className="p-4">${product.price.toFixed(2)}</td>
-                <td className="p-4">
-                  <div>
-                    {product.itemsLeft} Item Left
-                    <div className="text-sm text-gray-500">
-                      {product.sold} Sold
-                    </div>
-                  </div>
-                </td>
-                
+                <td className="p-4">${Number(product.price).toFixed(2)}</td>
+            
                 <td className="p-4">
                   <div className="flex gap-2">
                     <Link to={`/dashboard/admin/product/edit/${product.id}`}>
@@ -165,7 +85,7 @@ const ProductList = () => {
                       <Pencil className="w-5 h-5 text-orange-500" />
                     </button>
                     </Link>
-                    <button className="p-2 hover:bg-gray-100 rounded-full">
+                    <button onClick={() => handleDelete(product.id)} className="p-2 hover:bg-gray-100 rounded-full">
                       <Trash2 className="w-5 h-5 text-red-500" />
                     </button>
                   </div>

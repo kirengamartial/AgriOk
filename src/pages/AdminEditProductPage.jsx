@@ -1,10 +1,35 @@
-import React, { useState } from 'react';
-import { Camera } from 'lucide-react';
+import React, { useState, useEffect} from 'react';
+import { useUpdateProductMutation, useGetProductQuery } from '../slices/userSlices/userApiSlice';
+import { useParams } from 'react-router-dom';
+import toast from 'react-hot-toast';
+import { LoaderCircle } from 'lucide-react';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 const EditProductForm = () => {
+  const {id} = useParams()
+  const [isLoading, setIsLoading] = useState(false)
+  const {data: product, refetch} = useGetProductQuery(id)
+  const {userInfo} = useSelector(state => state.auth)
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    if(product) {
+      setFormData({
+        productName: product.name || '',
+        description: product.description || '',
+        quantity: product.quantity || '',
+        price: product.price || '',
+      });
+      refetch()
+    }
+  }, [product])
+
   const [formData, setFormData] = useState({
     productName: '',
+    description: '',
     quantity: '',
+    price: '',
     photo: null
   });
 
@@ -24,11 +49,42 @@ const EditProductForm = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle form submission here
-    console.log(formData);
+    setIsLoading(true)
+    const productData = new FormData();
+    productData.append('name', formData.productName);
+    productData.append('description', formData.description);
+    productData.append('quantity', formData.quantity);
+    productData.append('price', formData.price);
+    if (formData.photo) {
+      productData.append('photo', formData.photo);
+    }
+  
+    const token = userInfo.access_token
+    try {
+      const response = await fetch(`https://agriok-api.onrender.com/api/products/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        },
+        body: productData,
+      });
+  
+      if (response.ok) {
+        toast.success('Product Edited successfully');
+        navigate('/dashboard/admin/product/list');
+      } else {
+        throw new Error('Failed to edit product');
+      }
+    } catch (error) {
+      toast.error('Failed to edit product. Please try again.');
+      console.log(error);
+    } finally {
+      setIsLoading(false)
+    }
   };
+  
 
   return (
     <div className="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-sm">
@@ -55,6 +111,10 @@ const EditProductForm = () => {
               />
             </div>
 
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+                Description
+              </label>
+
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Quantity
@@ -65,6 +125,19 @@ const EditProductForm = () => {
                 value={formData.quantity}
                 onChange={handleChange}
                 placeholder="Quantity"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Price
+              </label>
+              <input
+                type="text"
+                name="price"
+                value={formData.price}
+                onChange={handleChange}
+                placeholder="Price"
                 className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               />
             </div>
@@ -84,9 +157,9 @@ const EditProductForm = () => {
 
             <button
               type="submit"
-              className="w-full bg-orange-500 text-white py-2 px-4 rounded-md hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2"
+              className="w-full bg-orange-500 text-white py-2 px-4 rounded-md hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 flex justify-center" 
             >
-              Send
+               {isLoading? <LoaderCircle className='animate-spin h-6 w-9'/> : 'Send'}
             </button>
           </div>
         </form>
