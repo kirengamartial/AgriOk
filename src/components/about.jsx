@@ -4,6 +4,7 @@ import Image2 from '../../public/image-5.jpg.png'
 import Image3 from '../../public/image-6.jpg.png'
 import Image4 from '../../public/image-7.jpg.png'
 import icon from '../../public/icon-heading.png.png'
+import { Link } from 'react-router-dom';
 
 const AboutSection = () => {
   return (
@@ -32,10 +33,12 @@ const AboutSection = () => {
               architecto beatae vitae dicta sunt.
             </p>
             
+            <Link to='/about'>
             <button className="border-2 text-sm border-black px-6 py-3 flex items-center gap-2 hover:bg-gray-100 transition-colors">
               Learn More Us
               <span className="ml-2">→</span>
             </button>
+            </Link>
           </div>
 
           {/* Right Image Grid */}
