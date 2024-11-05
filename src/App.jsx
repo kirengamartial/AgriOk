@@ -32,6 +32,8 @@ import NotFoundPage from './pages/NotFoundPage'
 import AccountPage from './pages/profilePage'
 import ProtectedRoutes from './layouts/ProtectedRoutes'
 import ProtectedAdminRoutes from './layouts/ProtectedAdminRoutes'
+import OrdersPage from './pages/AllOrdersPage'
+import OrderDetails from './pages/SingleOrderPage'
 
 const App = () => {
   const router = createHashRouter(
@@ -49,6 +51,8 @@ const App = () => {
           <Route path='/profile' element={<AccountPage/>}/>
           <Route path='/login' element={<LoginPage/>}/>
           <Route path='/register' element={<RegisterPage/>}/>
+          <Route path='/orders' element={<OrdersPage/>}/>
+          <Route path='/orders/:id' element={<OrderDetails/>}/>
         </Route>
         <Route path='*' element={<NotFoundPage/>}/>
 

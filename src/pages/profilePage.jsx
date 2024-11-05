@@ -8,6 +8,7 @@ import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { LoaderCircle } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const AccountPage = () => {
   const {data: profile, refetch} = useGetProfileQuery()
@@ -132,10 +133,10 @@ const AccountPage = () => {
             <nav className="w-full">
               <ul className="space-y-2">
                 <li>
-                  <a href="#" className="text-gray-600 hover:text-gray-900">Orders</a>
+                  <Link to="/orders" className="text-gray-600 hover:text-gray-900">Orders</Link>
                 </li>
-                <li>
-                  <a href="#" className="text-gray-600 hover:text-gray-900 font-medium">Edit Profile</a>
+                <li className="text-gray-600 hover:text-gray-900 font-medium">
+                  Edit Profile
                 </li>
               </ul>
             </nav>
