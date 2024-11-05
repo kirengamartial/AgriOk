@@ -46,13 +46,17 @@ const App = () => {
           <Route path='/trending' element={<TrendingPage/>}/>
           <Route path='/trending/:id' element={<SingleTrendingPage/>}/>
           <Route path='/product/:id' element={<SingleProductPage/>}/>
-          <Route path='/cart' element={<CartPage/>}/>
-          <Route path='/checkout' element={<CheckoutPage/>}/>
-          <Route path='/profile' element={<AccountPage/>}/>
           <Route path='/login' element={<LoginPage/>}/>
           <Route path='/register' element={<RegisterPage/>}/>
-          <Route path='/orders' element={<OrdersPage/>}/>
-          <Route path='/orders/:id' element={<OrderDetails/>}/>
+          
+          <Route path='' element={<ProtectedRoutes/>}>
+            <Route path='/checkout' element={<CheckoutPage/>}/>
+            <Route path='/cart' element={<CartPage/>}/>
+            <Route path='/profile' element={<AccountPage/>}/>
+            <Route path='/orders' element={<OrdersPage/>}/>
+            <Route path='/orders/:id' element={<OrderDetails/>}/>
+          </Route>
+
         </Route>
         <Route path='*' element={<NotFoundPage/>}/>
 
