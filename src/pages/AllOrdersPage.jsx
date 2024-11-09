@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
 import { useGetOrderQuery } from '../slices/userSlices/userApiSlice';
 import EmptyState from '../components/EmptyOrderState';
 
@@ -57,9 +56,9 @@ const OrdersPage = () => {
           <>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {currentOrders.map((order) => (
-                <Link 
+                <a 
                   key={order.id} 
-                  to={`/orders/${order.id}`}
+                  href={`/#/orders/${order.id}`}
                   className="block bg-slate-800 rounded-lg hover:bg-slate-700 transition-colors duration-200"
                 >
                   <div className="p-6">
@@ -82,7 +81,7 @@ const OrdersPage = () => {
                       </span>
                     </div>
                   </div>
-                </Link>
+                </a>
               ))}
             </div>
 
