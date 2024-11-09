@@ -70,17 +70,17 @@ const ProductList = () => {
                 <td className="p-4">
                   <div className="flex items-center gap-3">
                     <img
-                      src={product.name}
+                      src={product.photo}
                       alt={product.name}
                       className="w-12 h-12 rounded-lg"
                     />
                     <div>
-                      <div className="font-medium">{product.photo}</div>
+                      <div className="font-medium">{product.name}</div>
                       
                     </div>
                   </div>
                 </td>
-                <td className="p-4">${Number(product.price).toFixed(2)}</td>
+                <td className="p-4">${Number(product.price).toFixed(0)}</td>
             
                 <td className="p-4">
                   <div className="flex gap-2">

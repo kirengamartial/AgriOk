@@ -12,6 +12,7 @@ const ProductForm = () => {
     productName: '',
     description: '',
     quantity: '',
+    category: '',
     price: '',
     photo: null
   });
@@ -39,13 +40,14 @@ const ProductForm = () => {
     productData.append('name', formData.productName);
     productData.append('description', formData.description);
     productData.append('quantity', formData.quantity);
+    productData.append('category', formData.category);
     productData.append('price', formData.price);
     if (formData.photo) {
       productData.append('photo', formData.photo);
     }
   
     try {
-      await createProduct(productData).unwrap(); 
+     const res = await createProduct(productData).unwrap(); 
       toast.success('Product created successfully');
       navigate('/dashboard/admin/product/list');
     } catch (error) {
@@ -104,6 +106,19 @@ const ProductForm = () => {
                 value={formData.quantity}
                 onChange={handleChange}
                 placeholder="Quantity"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Category
+              </label>
+              <input
+                type="text"
+                name="category"
+                value={formData.category}
+                onChange={handleChange}
+                placeholder="Category"
                 className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               />
             </div>
