@@ -81,6 +81,43 @@ export const userApiSlice = apiSlice.injectEndpoints({
                 body: data
             })
         }),
+        getCart: builder.query({
+            query: () => ({
+                url: `/cart`,
+                method: 'GET'
+            })
+        }),
+        updateCart: builder.mutation({
+            query: (data) => ({
+                url: `/cart/${data.id}`,
+                method: 'PUT',
+                body: data
+            })
+        }),
+        deleteFromCart: builder.mutation({
+            query: (id) => ({
+                url: `/cart/${id}`,
+                method: 'DELETE'
+            })
+        }),
+        clearCart: builder.mutation({
+            query: () => ({
+                url: `/cart`,
+                method: 'DELETE'
+            })
+        }),
+        getOrder: builder.query({
+            query: () => ({
+                url: `/order/history`,
+                method: 'GET'
+            })
+        }),
+        placeOrder: builder.mutation({
+            query: () => ({
+                url: `/order/place`,
+                method: 'POST',
+            })
+        }),
     })
 })
 
@@ -96,5 +133,11 @@ export const {
     useDeleteProductMutation,
     useUpdateProductMutation,
     useGetProductQuery,
-    useCreateCartMutation
+    useCreateCartMutation,
+    useGetCartQuery,
+    useUpdateCartMutation,
+    useDeleteFromCartMutation,
+    useClearCartMutation,
+    useGetOrderQuery,
+    usePlaceOrderMutation
 } = userApiSlice

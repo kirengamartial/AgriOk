@@ -1,8 +1,15 @@
 import React from 'react';
 import { Mail, Twitter, Facebook, Instagram, ShoppingCart } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useGetCartQuery } from '../slices/userSlices/userApiSlice';
 
 const BlackHeader = () => {
+  const {data: cart} = useGetCartQuery(undefined, {
+    pollingInterval: 1000 
+  });
+
+  const cartLength = cart?.[0]?.items?.length || 0;
+
   return (
     <div className="bg-black text-white py-2 ">
       <div className="max-w-5xl mx-auto px-6 flex justify-between items-center">
@@ -19,7 +26,7 @@ const BlackHeader = () => {
             <div className="relative">
               <ShoppingCart size={14} className="cursor-pointer hover:text-gray-300" />
               <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">
-                2
+                {cartLength}
               </span>
             </div>
           </Link>
