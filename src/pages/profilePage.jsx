@@ -75,7 +75,6 @@ const AccountPage = () => {
   const handleSubmit = async(e) => {
     e.preventDefault();
     try {
-      // Create FormData object to handle file upload
       const formDataToSend = new FormData();
       Object.keys(formData).forEach(key => {
         formDataToSend.append(key, formData[key]);
@@ -87,6 +86,7 @@ const AccountPage = () => {
         first_name: res.first_name,
         photo: res.photo
       }))
+      refetch()
       navigate('/')
     } catch (error) {
       console.log(error)

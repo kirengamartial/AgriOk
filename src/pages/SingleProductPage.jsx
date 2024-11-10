@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { useGetProductQuery } from '../slices/userSlices/userApiSlice';
 import { useCreateCartMutation } from '../slices/userSlices/userApiSlice';
 import toast from 'react-hot-toast';
-import { ShoppingCart, Star, Package } from 'lucide-react';
+import { ShoppingCart, Package } from 'lucide-react';
 import BgImage from '../../public/Image.png'
 
 const ProductDetail = () => {
@@ -11,7 +11,6 @@ const ProductDetail = () => {
   const { data: product, isLoading, error } = useGetProductQuery(id);
   const [createCart, { isLoading: isAddingToCart }] = useCreateCartMutation();
   const [quantity, setQuantity] = useState(1);
-  const [selectedImage, setSelectedImage] = useState(0);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

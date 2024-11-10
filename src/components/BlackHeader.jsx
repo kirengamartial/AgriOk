@@ -1,12 +1,16 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Mail, Twitter, Facebook, Instagram, ShoppingCart } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useGetCartQuery } from '../slices/userSlices/userApiSlice';
 
 const BlackHeader = () => {
-  const {data: cart} = useGetCartQuery(undefined, {
-    pollingInterval: 1000 
-  });
+  const {data: cart, refetch} = useGetCartQuery();
+
+  useEffect(() => {
+    if(cart) {
+      refetch()
+    }
+  }, [cart, refetch])
 
   const cartLength = cart?.[0]?.items?.length || 0;
 

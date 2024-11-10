@@ -1,15 +1,24 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { Menu, X, ChevronDown } from 'lucide-react';
+import { Menu, X, ChevronDown, User } from 'lucide-react';
 import { useLogoutMutation } from '../slices/userSlices/userApiSlice';
 import { logOut } from '../slices/userSlices/authSlice';
 import { useDispatch } from 'react-redux';
+import { useGetProfileQuery } from '../slices/userSlices/userApiSlice';
 
 const WhiteHeader = () => {
   const {userInfo} = useSelector(state => state.auth);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const {data: profile, refetch} = useGetProfileQuery()
+  
+ useEffect(() => {
+  if(profile) {
+    refetch()
+  }
+ }, [])
+ 
   const [logout] = useLogoutMutation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -72,10 +81,29 @@ const WhiteHeader = () => {
                 <div className="relative">
                   <button
                     onClick={() => setIsProfileOpen(!isProfileOpen)}
-                    className="flex items-center cursor-pointer"
+                    className="flex items-center space-x-2 cursor-pointer group"
                   >
-                    <span className="text-sm text-gray-600">{userInfo.first_name}</span>
-                    <ChevronDown className="ml-1" size={16} />
+                    <div className="flex items-center">
+                      {profile?.photo ? (
+                        <div className="w-8 h-8 rounded-full overflow-hidden border-2 border-transparent group-hover:border-yellow-400 transition-colors">
+                          <img 
+                            src={profile.photo} 
+                            alt={userInfo.first_name}
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                      ) : (
+                        <div className="flex items-center">
+                          <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center border-2 border-transparent group-hover:border-yellow-400 transition-colors">
+                            <User size={16} className="text-gray-500" />
+                          </div>
+                          <span className="ml-2 text-sm text-gray-600 group-hover:text-gray-900">
+                            {userInfo.first_name}
+                          </span>
+                        </div>
+                      )}
+                      <ChevronDown className="ml-1 text-gray-400 group-hover:text-gray-600" size={16} />
+                    </div>
                   </button>
                   
                   {isProfileOpen && (

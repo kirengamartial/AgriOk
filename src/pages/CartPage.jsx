@@ -17,10 +17,7 @@ const CartPage = () => {
   const navigate = useNavigate()
   const [localCart, setLocalCart] = useState(null);
   
-  const { data: cart, isLoading, refetch } = useGetCartQuery(undefined, {
-    refetchOnMountOrArgChange: true,
-    pollingInterval: 1000,
-  });
+  const { data: cart, isLoading, refetch } = useGetCartQuery();
 
   const [updateCart, { isLoading: isUpdating }] = useUpdateCartMutation();
   const [deleteItem, { isLoading: isDeleting }] = useDeleteFromCartMutation();
@@ -75,16 +72,13 @@ const CartPage = () => {
 
   const handleClearCart = async () => {
     try {
-      await clearCart().unwrap();
-      setLocalCart({ 0: { items: [] } });
-      await refetch();
-      toast.success('Cart cleared successfully');
+        await clearCart().unwrap();
+        setLocalCart({ 0: { items: [] } });
+        toast.success('Cart cleared successfully');
     } catch (error) {
-      toast.error('Failed to clear cart');
-      setLocalCart(cart);
-      await refetch();
+        toast.error('Failed to clear cart');
     }
-  };
+};
 
   const calculateSubtotal = (items) => items?.reduce((total, item) => total + (item.product.price * item.quantity), 0) || 0;
 
