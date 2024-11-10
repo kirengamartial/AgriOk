@@ -28,7 +28,7 @@ const ProductList = () => {
 
   const handleDelete = async (id) => {
     try {
-      await deleteProduct(id);
+      await deleteProduct(id).unwrap();
       refetch();
       toast.success('deleted successfully');
     } catch (error) {
