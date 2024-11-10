@@ -69,8 +69,8 @@ src/
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/kirengamartial/agriok-frontend.git
-cd agriok-frontend
+git clone https://github.com/kirengamartial/AgriOk.git
+cd AgriOk
 ```
 
 2. Install dependencies:
