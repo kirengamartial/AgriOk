@@ -25,8 +25,8 @@ A modern, responsive web application for agricultural monitoring and insights vi
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/[your-username]/agriok-frontend.git
-cd agriok-frontend
+git clone https://github.com/kirengamartial/AgriOk.git
+cd AgriOk
 ```
 
 2. Install dependencies:
