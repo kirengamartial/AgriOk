@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import BackgroundImage from '../../public/Background.png';
-import { Link, useNavigate } from 'react-router-dom';
+import HeroSection from '../components/ShopHeroSection';
+import EmptyCart from '../components/EmptyCart';
+import { useNavigate } from 'react-router-dom';
 import { 
   useGetCartQuery, 
   useUpdateCartMutation, 
@@ -9,7 +10,7 @@ import {
   usePlaceOrderMutation
 } from '../slices/userSlices/userApiSlice';
 import Spinner from '../components/Loader';
-import { Trash2, RefreshCw, ShoppingCart } from 'lucide-react';
+import { Trash2, RefreshCw } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 const CartPage = () => {
@@ -36,7 +37,6 @@ const CartPage = () => {
   const handleQuantityChange = async (itemId, newQuantity) => {
     try {
       await updateCart({ id: itemId, quantity: newQuantity }).unwrap();
-      // Update local cart immediately
       setLocalCart(prevCart => ({
         ...prevCart,
         0: {
@@ -57,7 +57,7 @@ const CartPage = () => {
 
   const handleDeleteItem = async (itemId) => {
     try {
-      // Update local cart immediately
+      await deleteItem(itemId).unwrap();
       setLocalCart(prevCart => ({
         ...prevCart,
         0: {
@@ -65,7 +65,6 @@ const CartPage = () => {
           items: prevCart[0].items.filter(item => item.id !== itemId)
         }
       }));
-      await deleteItem(itemId).unwrap();
       await refetch();
       toast.success('Item removed from cart');
     } catch (error) {
@@ -76,9 +75,8 @@ const CartPage = () => {
 
   const handleClearCart = async () => {
     try {
-  
-      setLocalCart({ 0: { items: [] } });
       await clearCart().unwrap();
+      setLocalCart({ 0: { items: [] } });
       await refetch();
       toast.success('Cart cleared successfully');
     } catch (error) {
@@ -88,14 +86,12 @@ const CartPage = () => {
     }
   };
 
-  const calculateSubtotal = (items) => {
-    return items?.reduce((total, item) => total + (item.product.price * item.quantity), 0) || 0;
-  };
+  const calculateSubtotal = (items) => items?.reduce((total, item) => total + (item.product.price * item.quantity), 0) || 0;
 
   const handleCheckout = async() => {
   try {
-    setLocalCart({ 0: { items: [] } });
     await placeOrder().unwrap
+    setLocalCart({ 0: { items: [] } });
     await refetch();
     toast.success('Placed Order successfully');
     navigate('/orders')    
@@ -115,47 +111,24 @@ const CartPage = () => {
     );
   }
 
-  if (!displayCart?.[0]?.items?.length) {
-    return (
-      <div className="min-h-screen flex flex-col items-center justify-center gap-4">
-        <ShoppingCart className="w-16 h-16 text-gray-400" />
-        <h2 className="text-xl font-medium text-gray-600">Your cart is empty</h2>
-        <Link to="/shop" className="bg-yellow-400 text-white px-6 py-2 rounded hover:bg-yellow-500 transition-colors">
-          Continue Shopping
-        </Link>
-      </div>
-    );
-  }
-
+  if (!displayCart?.[0]?.items?.length) return <EmptyCart/>
+    
+  
   const subtotal = calculateSubtotal(displayCart[0]?.items);
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Hero Section */}
-      <div className="relative h-48 bg-gray-900 mb-8">
-        <div className="absolute inset-0">
-          <img 
-            src={BackgroundImage}
-            alt="Hero background" 
-            className="w-full h-full object-cover opacity-40"
-          />
-        </div>
-        <div className="absolute inset-0 flex items-center justify-center">
-          <h1 className="text-3xl font-bold text-white">Shopping Cart</h1>
-        </div>
-      </div>
+      <HeroSection/>
 
-      {/* Cart Content */}
       <div className="max-w-7xl mx-auto px-4 py-8">
-        <div className="bg-white rounded-lg shadow-sm relative">
-          {/* Loading Overlay */}
+        <div className="bg-white rounded-lg shadow-sm relative"> 
+
           {(isUpdating || isDeleting || isClearing || isPlacingOrder) && (
             <div className="absolute inset-0 bg-white/50 z-10 flex items-center justify-center">
               <Spinner />
             </div>
           )}
           
-          {/* Cart Table */}
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
@@ -183,7 +156,7 @@ const CartPage = () => {
                         </div>
                       </div>
                     </td>
-                    <td className="px-6 py-4">${Number(item.product.price).toFixed(2)}</td>
+                    <td className="px-6 py-4">Rwf {Number(item.product.price).toFixed(0)}</td>
                     <td className="px-6 py-4">
                       <input
                         type="number"
@@ -194,7 +167,7 @@ const CartPage = () => {
                       />
                     </td>
                     <td className="px-6 py-4 font-medium">
-                      ${(item.product.price * item.quantity).toFixed(2)}
+                      Rwf {(item.product.price * item.quantity).toFixed(0)}
                     </td>
                     <td className="px-6 py-4">
                       <button
@@ -210,7 +183,6 @@ const CartPage = () => {
             </table>
           </div>
 
-          {/* Cart Actions */}
           <div className="p-6 border-t bg-gray-50">
             <div className="flex justify-between items-center">
               <button
@@ -238,11 +210,11 @@ const CartPage = () => {
             <div className="space-y-3">
               <div className="flex justify-between py-3 border-b">
                 <span className="text-gray-600">Subtotal</span>
-                <span className="font-medium">${subtotal.toFixed(2)}</span>
+                <span className="font-medium">Rwf {subtotal.toFixed(0)}</span>
               </div>
               <div className="flex justify-between py-3">
                 <span className="font-medium">Total</span>
-                <span className="font-medium text-lg">${subtotal.toFixed(2)}</span>
+                <span className="font-medium text-lg">Rwf {subtotal.toFixed(0)}</span>
               </div>
                 
                 <button onClick={handleCheckout} className="w-full bg-yellow-400 text-white py-3 px-4 rounded-lg font-medium hover:bg-yellow-500 transition-colors">

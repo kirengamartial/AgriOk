@@ -86,7 +86,7 @@ const ProductList = () => {
                           </div>
                         </div>
                       </td>
-                      <td className="p-4">${Number(product.price).toFixed(0)}</td>
+                      <td className="p-4">Rwf {Number(product.price).toFixed(0)}</td>
 
                       <td className="p-4">
                         <div className="flex gap-2">

@@ -119,7 +119,7 @@ const ShopPage = () => {
                       </h3>
                       <div className="mt-2 flex items-center justify-between">
                         <div className="text-lg font-semibold text-gray-900">
-                          ${Number(product.price).toFixed(0)}
+                          Rwf {Number(product.price).toFixed(0)}
                         </div>
                         <div className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
                           In Stock

@@ -110,7 +110,7 @@ const ProductDetail = () => {
                 <h2 className="text-3xl font-bold">{product?.name}</h2>
                 
                 <div className="text-3xl font-bold text-yellow-600">
-                  ${Number(product.price).toFixed(0)}
+                  Rwf {Number(product.price).toFixed(0)}
                 </div>
 
                 <p className="text-gray-600 leading-relaxed">
