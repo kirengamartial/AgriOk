@@ -118,6 +118,24 @@ export const userApiSlice = apiSlice.injectEndpoints({
                 method: 'POST',
             })
         }),
+        getSingleOrder: builder.query({
+            query: (id) => ({
+                url: `/orders/${id}`,
+                method: 'GET',
+            })
+        }),
+        deleteOrder: builder.mutation({
+            query: (id) => ({
+                url: `/orders/${id}`,
+                method: 'DELETE',
+            })
+        }),
+        getAllOrders: builder.query({
+            query: () => ({
+                url: `/orders`,
+                method: 'GET',
+            })
+        }),
     })
 })
 
@@ -139,5 +157,8 @@ export const {
     useDeleteFromCartMutation,
     useClearCartMutation,
     useGetOrderQuery,
-    usePlaceOrderMutation
+    usePlaceOrderMutation,
+    useGetSingleOrderQuery,
+    useDeleteOrderMutation,
+    useGetAllOrdersQuery
 } = userApiSlice

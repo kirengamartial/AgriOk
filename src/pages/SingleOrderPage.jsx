@@ -1,30 +1,89 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useParams, useNavigate } from 'react-router-dom';
+import { useGetSingleOrderQuery, useDeleteOrderMutation } from '../slices/userSlices/userApiSlice';
 
 const OrderDetails = () => {
+  const { id } = useParams();
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('items');
-  
-  const order = {
-    id: "6",
-    status: "PAID",
-    amount: 36000.00,
-    item: {
-      name: "Stylish T-Shirt",
-      quantity: 1,
-      price: 36000.00,
-      image: "/api/placeholder/400/320"
-    },
-    shipping: {
-      address: "Kg 08st",
-      location: "Kigali, Rwanda"
-    },
-    timeline: {
-      placed: "11/5/2024, 9:44:55 AM",
-      processing: "11/5/2024, 9:46:03 AM"
+  const { data: order, isLoading } = useGetSingleOrderQuery(id);
+  const [cancelOrder, { isLoading: cancelIsLoading }] = useDeleteOrderMutation();
+  const [error, setError] = useState(null);
+
+  const handleCancelOrder = async () => {
+    try {
+      await cancelOrder(id).unwrap();
+      navigate('/orders');
+    } catch (err) {
+      setError('Failed to cancel order. Please try again.');
+      setTimeout(() => setError(null), 3000);
     }
   };
 
-  const isPending = order.status === 'PENDING';
+  if (isLoading) {
+    return (
+      <div className="min-h-screen w-full bg-slate-950 flex items-center justify-center p-6">
+        <div className="w-full max-w-3xl bg-gray-800/80 rounded-lg p-8">
+          <div className="animate-pulse space-y-6">
+            {/* Header Skeleton */}
+            <div className="flex justify-between items-center">
+              <div className="h-8 bg-gray-700 rounded w-1/4"></div>
+              <div className="h-6 bg-gray-700 rounded w-20"></div>
+            </div>
+            
+            {/* Amount Cards Skeleton */}
+            <div className="grid grid-cols-2 gap-4">
+              <div className="bg-gray-900 p-4 rounded-lg">
+                <div className="h-4 bg-gray-700 rounded w-1/2 mb-2"></div>
+                <div className="h-6 bg-gray-700 rounded w-3/4"></div>
+              </div>
+              <div className="bg-gray-900 p-4 rounded-lg">
+                <div className="h-4 bg-gray-700 rounded w-1/2 mb-2"></div>
+                <div className="h-6 bg-gray-700 rounded w-3/4"></div>
+              </div>
+            </div>
+            
+            {/* Tabs Skeleton */}
+            <div className="flex gap-2">
+              <div className="h-10 bg-gray-700 rounded w-24"></div>
+              <div className="h-10 bg-gray-700 rounded w-24"></div>
+            </div>
+            
+            {/* Content Area Skeleton */}
+            <div className="bg-gray-900 p-4 rounded-lg">
+              <div className="flex gap-4">
+                <div className="w-16 h-16 bg-gray-700 rounded"></div>
+                <div className="flex-1 space-y-2">
+                  <div className="h-4 bg-gray-700 rounded w-3/4"></div>
+                  <div className="h-4 bg-gray-700 rounded w-1/2"></div>
+                </div>
+              </div>
+            </div>
+            
+            {/* Timeline Skeleton */}
+            <div className="bg-gray-900 p-4 rounded-lg">
+              <div className="h-6 bg-gray-700 rounded w-1/4 mb-4"></div>
+              <div className="space-y-2">
+                <div className="h-4 bg-gray-700 rounded w-full"></div>
+                <div className="h-4 bg-gray-700 rounded w-3/4"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (!order) {
+    return (
+      <div className="min-h-screen w-full bg-slate-950 flex items-center justify-center p-6">
+        <div className="text-white text-xl">Order not found</div>
+      </div>
+    );
+  }
+
+  const isPending = order.status === 'Pending';
+  const items = order.items[0];
   
   return (
     <div className="min-h-screen w-full bg-slate-950 flex items-center justify-center p-6">
@@ -33,15 +92,15 @@ const OrderDetails = () => {
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-2xl font-bold text-white">Order #{order.id}</h2>
             <span className={`px-3 py-1 rounded-full text-sm font-medium 
-              ${isPending ? 'bg-yellow-500 text-black' : 'bg-gray-500 text-white'}`}>
-              {isPending ? 'PENDING' : 'PAID'}
+              ${isPending ? 'bg-yellow-500 text-black' : 'bg-green-500 text-white'}`}>
+              {order.status}
             </span>
           </div>
 
           <div className="grid grid-cols-2 gap-4 mb-6">
             <div className="bg-gray-900 p-4 rounded-lg">
               <p className="text-gray-400 text-sm mb-1">Total Amount</p>
-              <p className="text-xl font-bold text-white">RWF {order.amount.toFixed(2)}</p>
+              <p className="text-xl font-bold text-white">RWF {order.total_amount}</p>
             </div>
             <div className="bg-gray-900 p-4 rounded-lg">
               <p className="text-gray-400 text-sm mb-1">Payment Method</p>
@@ -75,23 +134,23 @@ const OrderDetails = () => {
               {activeTab === 'items' ? (
                 <div className="flex items-center gap-4">
                   <img 
-                    src={order.item.image} 
-                    alt={order.item.name}
+                    src={items.product.photo} 
+                    alt={items.product.name}
                     className="w-16 h-16 rounded-lg object-cover"
                   />
                   <div className="flex-1">
-                    <h3 className="text-lg font-medium text-white">{order.item.name}</h3>
+                    <h3 className="text-lg font-medium text-white">{items.product.name}</h3>
                     <p className="text-gray-400">
-                      Quantity: {order.item.quantity}
+                      Quantity: {items.quantity}
                       <br />
-                      Price: RWF {order.item.price.toFixed(2)}
+                      Price: RWF {items.product.price}
                     </p>
                   </div>
                 </div>
               ) : (
                 <div>
-                  <h3 className="text-lg font-medium text-white">{order.shipping.address}</h3>
-                  <p className="text-gray-400">{order.shipping.location}</p>
+                  <h3 className="text-lg font-medium text-white">Shipping details will be updated</h3>
+                  <p className="text-gray-400">Once the order is processed</p>
                 </div>
               )}
             </div>
@@ -102,14 +161,8 @@ const OrderDetails = () => {
             <div className="space-y-2">
               <div className="flex items-center gap-2">
                 <div className="w-2 h-2 rounded-full bg-green-500"></div>
-                <p className="text-gray-300">Order Placed: {order.timeline.placed}</p>
+                <p className="text-gray-300">Order Created: {new Date(order.created_at).toLocaleString()}</p>
               </div>
-              {order.timeline.processing && (
-                <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 rounded-full bg-blue-500"></div>
-                  <p className="text-gray-300">Processing Started: {order.timeline.processing}</p>
-                </div>
-              )}
             </div>
           </div>
 
@@ -122,21 +175,26 @@ const OrderDetails = () => {
                 <button className="px-4 py-2 bg-green-500 text-white rounded-lg">
                   COMPLETE PAYMENT
                 </button>
-                <button className="px-4 py-2 bg-red-500 text-white rounded-lg">
-                  CANCEL ORDER
+                <button 
+                  onClick={handleCancelOrder}
+                  disabled={cancelIsLoading}
+                  className={`px-4 py-2 bg-red-500 text-white rounded-lg 
+                    ${cancelIsLoading ? 'opacity-50 cursor-not-allowed' : 'hover:bg-red-600'}`}
+                >
+                  {cancelIsLoading ? 'CANCELING...' : 'CANCEL ORDER'}
                 </button>
                 <Link to='/orders'>
-              <button className="px-4 py-2 bg-gray-700 text-white rounded-lg">
-                BACK TO ORDERS
-              </button>
+                  <button className="px-4 py-2 bg-gray-700 text-white rounded-lg">
+                    BACK TO ORDERS
+                  </button>
                 </Link>
               </div>
             ) : (
-                <Link to='/orders'>
-              <button className="px-4 py-2 bg-gray-700 text-white rounded-lg">
-                BACK TO ORDERS
-              </button>
-                </Link>
+              <Link to='/orders'>
+                <button className="px-4 py-2 bg-gray-700 text-white rounded-lg">
+                  BACK TO ORDERS
+                </button>
+              </Link>
             )}
           </div>
         </div>

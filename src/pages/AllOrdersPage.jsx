@@ -1,12 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useGetOrderQuery } from '../slices/userSlices/userApiSlice';
 import EmptyState from '../components/EmptyOrderState';
+import Spinner from '../components/Loader'
 
 
 const OrdersPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const ordersPerPage = 6;
-  const { data, isLoading, error } = useGetOrderQuery();
+  const { data, isLoading, error, refetch } = useGetOrderQuery();
+
+  useEffect(() => {
+    if(data) {
+      refetch()
+    }
+  }, [])
+  
 
   if (isLoading) {
     return (

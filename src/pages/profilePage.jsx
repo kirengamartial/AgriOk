@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { User } from 'lucide-react';
+import { User, Upload } from 'lucide-react';
 import heroImage from '../../public/Section.png'
 import { useGetProfileQuery } from '../slices/userSlices/userApiSlice';
 import { useUpdateProfileMutation, useUpdatePasswordMutation } from '../slices/userSlices/userApiSlice';
@@ -17,6 +17,8 @@ const AccountPage = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   
+  const [photoPreview, setPhotoPreview] = useState(null);
+  
   useEffect(() => {
     if(profile) {
       setFormData({
@@ -25,8 +27,12 @@ const AccountPage = () => {
         phone_number: profile.phone_number || '',
         country: profile.country || '',
         city: profile.city || '',
-        postal_code: profile.postal_code || ''
+        postal_code: profile.postal_code || '',
+        photo: profile.photo || ''
       });
+      if (profile.photo) {
+        setPhotoPreview(profile.photo);
+      }
       refetch()
     }
   }, [profile])
@@ -37,7 +43,8 @@ const AccountPage = () => {
     phone_number: '',
     country: '',
     city: '',
-    postal_code: ''
+    postal_code: '',
+    photo: ''
   });
 
   const handleChange = (e) => {
@@ -48,20 +55,45 @@ const AccountPage = () => {
     }));
   };
 
-  const handleSubmit = async(e) => {
-    e.preventDefault();
-    try {
-      const res = await update(formData).unwrap()
-      console.log(res.first_name)
-      toast.success('Edited successfully')
-      dispatch(updateUserInfo({first_name: res.first_name}))
-      navigate('/')
-    } catch (error) {
-      console.log(error)
+  const handlePhotoChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setFormData(prev => ({
+        ...prev,
+        photo: file
+      }));
+      
+      // Create preview URL
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPhotoPreview(reader.result);
+      };
+      reader.readAsDataURL(file);
     }
   };
 
-  
+  const handleSubmit = async(e) => {
+    e.preventDefault();
+    try {
+      // Create FormData object to handle file upload
+      const formDataToSend = new FormData();
+      Object.keys(formData).forEach(key => {
+        formDataToSend.append(key, formData[key]);
+      });
+
+      const res = await update(formDataToSend).unwrap()
+      toast.success('Profile updated successfully')
+      dispatch(updateUserInfo({
+        first_name: res.first_name,
+        photo: res.photo
+      }))
+      navigate('/')
+    } catch (error) {
+      console.log(error)
+      toast.error('Failed to update profile')
+    }
+  };
+
   const [formPasswordData, setFormPasswordData] = useState({
     oldPassword: '',
     newPassword: ''
@@ -108,7 +140,6 @@ const AccountPage = () => {
   return (
     <>
     <div className="relative h-64">
-        {/* Background Image */}
         <div 
           className="absolute inset-0 bg-cover bg-center"
           style={{ backgroundImage: `url(${heroImage})` }}
@@ -116,7 +147,6 @@ const AccountPage = () => {
           <div className="absolute inset-0 bg-black/40"></div>
         </div>
         
-        {/* Shop Text */}
         <div className="max-w-5xl relative z-10 container mx-auto h-full">
           <h1 className="text-3xl font-bold text-white pt-20 pl-4">Account</h1>
         </div>
@@ -126,8 +156,27 @@ const AccountPage = () => {
         {/* Sidebar */}
         <div className="md:col-span-1 bg-white p-6 rounded-lg shadow-sm">
           <div className="flex flex-col items-center">
-            <div className="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mb-4">
-              <User size={40} className="text-gray-400" />
+            <div className="relative group">
+              <div className="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mb-4 overflow-hidden">
+                {photoPreview || formData.photo ? (
+                  <img 
+                    src={photoPreview || formData.photo} 
+                    alt="Profile" 
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <User size={40} className="text-gray-400" />
+                )}
+              </div>
+              <label className="absolute bottom-4 right-0 bg-white rounded-full p-2 shadow-lg cursor-pointer group-hover:bg-gray-50">
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handlePhotoChange}
+                  className="hidden"
+                />
+                <Upload size={16} className="text-gray-600" />
+              </label>
             </div>
             <p className="text-lg font-medium mb-6">Hello, {formData.first_name || 'User'}</p>
             <nav className="w-full">
@@ -225,9 +274,13 @@ const AccountPage = () => {
                   />
                 </div>
               </div>
-              <button type="submit" className="mt-6 w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 flex items-center justify-center">
+              <button 
+                type="submit" 
+                className="mt-6 w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 flex items-center justify-center"
+                disabled={isLoading}
+              >
                {isLoading ? <LoaderCircle className="animate-spin h-6 w-6" /> : 'Save changes'}
-            </button>
+              </button>
             </div>
           </form>
 
@@ -260,8 +313,9 @@ const AccountPage = () => {
               <button
                 disabled={isLoadingPassword}
                 type='submit'
-                className="w-full bg-green-500 text-white py-2 rounded-md hover:bg-green-600 flex items-center justify-center">
-                  {isLoadingPassword ? <LoaderCircle className="animate-spin h-6 w-6" /> : 'Change password'}
+                className="w-full bg-green-500 text-white py-2 rounded-md hover:bg-green-600 flex items-center justify-center"
+              >
+                {isLoadingPassword ? <LoaderCircle className="animate-spin h-6 w-6" /> : 'Change password'}
               </button>
             </div>
           </form>
