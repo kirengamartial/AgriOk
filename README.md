@@ -1,6 +1,8 @@
 # AgriOk Frontend
 
 A modern, responsive web application for agricultural monitoring and insights visualization. This dashboard enables farmers to monitor real-time sensor data and receive actionable recommendations for optimal crop management.
+![image](https://github.com/user-attachments/assets/fda49f69-0c0b-4a7c-a0f9-0e697ab407ec)
+
 
 ## 🌟 Features
 
