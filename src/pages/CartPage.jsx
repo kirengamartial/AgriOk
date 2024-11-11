@@ -12,10 +12,12 @@ import {
 import Spinner from '../components/Loader';
 import { Trash2, RefreshCw } from 'lucide-react';
 import toast from 'react-hot-toast';
+import { useSelector } from 'react-redux';
 
 const CartPage = () => {
   const navigate = useNavigate()
   const [localCart, setLocalCart] = useState(null);
+  const [isCheckout, setIsCheckout] =useState(false)
   
   const { data: cart, isLoading, refetch } = useGetCartQuery();
 
@@ -24,6 +26,7 @@ const CartPage = () => {
   const [clearCart, { isLoading: isClearing }] = useClearCartMutation();
   const [placeOrder, {isLoading: isPlacingOrder}] = usePlaceOrderMutation()
 
+  const {userInfo} = useSelector(state => state.auth)
 
   useEffect(() => {
     if (cart) {
@@ -83,16 +86,28 @@ const CartPage = () => {
   const calculateSubtotal = (items) => items?.reduce((total, item) => total + (item.product.price * item.quantity), 0) || 0;
 
   const handleCheckout = async() => {
+    setIsCheckout(true)
   try {
-    await placeOrder().unwrap
+    const token = userInfo.access_token
+    const res = await fetch('https://agriok-api.onrender.com/api/order/place',{
+      method: 'POST',
+      headers: {
+        "Authorization": `Bearer ${token}`,
+        "Content-Type": "application/json"
+      }
+    })
+    const data = await res.json()  
     setLocalCart({ 0: { items: [] } });
     await refetch();
     toast.success('Placed Order successfully');
-    navigate('/orders')    
+    navigate(`/checkout/${data.order_id}`)
   } catch (error) {
+    console.log(error)
     toast.error('Failed to Place Order');
       setLocalCart(cart);
       await refetch();
+  }finally {
+    setIsCheckout(false)
   }
   }
   const displayCart = localCart || cart;
@@ -212,7 +227,7 @@ const CartPage = () => {
               </div>
                 
                 <button onClick={handleCheckout} className="w-full bg-yellow-400 text-white py-3 px-4 rounded-lg font-medium hover:bg-yellow-500 transition-colors">
-                  Proceed to Checkout
+                  {isCheckout ? 'checkout...': 'Proceed to Checkout'} 
                 </button>
               
             </div>

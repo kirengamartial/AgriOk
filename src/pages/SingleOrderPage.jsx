@@ -172,9 +172,11 @@ const OrderDetails = () => {
             </button>
             {isPending ? (
               <div className="flex gap-2">
+                <Link to={`/checkout/${id}`}>
                 <button className="px-4 py-2 bg-green-500 text-white rounded-lg">
                   COMPLETE PAYMENT
                 </button>
+                </Link>
                 <button 
                   onClick={handleCancelOrder}
                   disabled={cancelIsLoading}

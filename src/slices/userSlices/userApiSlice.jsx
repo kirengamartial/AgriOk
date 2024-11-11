@@ -189,7 +189,18 @@ export const userApiSlice = apiSlice.injectEndpoints({
                 url: `/order/place`,
                 method: 'POST',
             }),
-            invalidatesTags: ['Order', 'Cart']
+            invalidatesTags: ['Order', 'Cart'],
+            async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+                try {
+                    await queryFulfilled;
+                    // Reset the getCart query data in the cache
+                    dispatch(
+                        userApiSlice.util.updateQueryData('getCart', undefined, () => ({
+                            0: { items: [] }
+                        }))
+                    );
+                } catch {}
+            }
         }),
         getSingleOrder: builder.query({
             query: (id) => ({

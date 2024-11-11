@@ -50,7 +50,7 @@ const App = () => {
           <Route path='/register' element={<RegisterPage/>}/>
           
           <Route path='' element={<ProtectedRoutes/>}>
-            <Route path='/checkout' element={<CheckoutPage/>}/>
+            <Route path='/checkout/:id' element={<CheckoutPage/>}/>
             <Route path='/cart' element={<CartPage/>}/>
             <Route path='/profile' element={<AccountPage/>}/>
             <Route path='/orders' element={<OrdersPage/>}/>
