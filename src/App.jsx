@@ -34,6 +34,8 @@ import ProtectedRoutes from './layouts/ProtectedRoutes'
 import ProtectedAdminRoutes from './layouts/ProtectedAdminRoutes'
 import OrdersPage from './pages/AllOrdersPage'
 import OrderDetails from './pages/SingleOrderPage'
+import FarmLand from './pages/FarmLand'
+import CreateFarmland from './pages/CreateFarmland'
 
 const App = () => {
   const router = createHashRouter(
@@ -63,9 +65,12 @@ const App = () => {
         <Route path='/dashboard' element={<ProtectedAdminRoutes/>}> 
         <Route path='' element={<AdminLayout/>}>
           <Route path='admin' element={<AdminHomePage/>}/>
+          <Route path='insights' element={<FarmerHomePage/>}/>
           <Route path='admin/product/create' element={<AdminCreateProductPage/>}/>
           <Route path='admin/product/list' element={<AdminListProductsPage/>}/>
           <Route path='admin/product/edit/:id' element={<EditProductForm/>}/>
+          <Route path='admin/farmland/create' element={<CreateFarmland/>}/>
+          <Route path='admin/farmland/list' element={<FarmLand/>}/>
         </Route>
         </Route>
 
@@ -73,6 +78,8 @@ const App = () => {
         <Route path='' element={<FarmerLayout/>}>
           <Route path='farmer' element={<FarmerHomePage/>}/>
           <Route path='farmer/trending/create' element={<FarmerCreateTrendingPage/>}/>
+          <Route path='farmer/farmland/create' element={<CreateFarmland/>}/>
+          <Route path='farmer/farmland/list' element={<FarmLand/>}/>
         </Route>
         </Route>
       </>

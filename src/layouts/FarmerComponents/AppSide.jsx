@@ -11,6 +11,7 @@ const AppAside = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [toggleLogout, setToggleLogout] = useState(false);
+  const [toggleFarmland, setToggleFarmland] = useState(false);
   const [logout] = useLogoutMutation()
 
   const handleLogout = async() => {
@@ -86,6 +87,40 @@ const AppAside = () => {
               Create
             </Link>
           </nav>
+        </div>
+        <div className="px-3 py-4">
+          <div 
+            className="px-3 flex items-center justify-between cursor-pointer group"
+            onClick={() => setToggleFarmland(!toggleFarmland)}
+          >
+            <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider">
+              Farmland
+            </p>
+            <FaChevronDown 
+              size={12} 
+              className={`text-gray-400 transition-transform duration-200 ${
+                toggleFarmland ? 'transform rotate-180' : ''
+              }`}
+            />
+          </div>
+          
+          {/* Products Dropdown */}
+          {toggleFarmland && (
+            <nav className="mt-3 space-y-1 pl-3">
+              <Link
+                to="/dashboard/farmer/farmland/list"
+                className={`flex items-center px-3 py-2 text-sm rounded-md transition-colors ${
+                  location.pathname === '/dashboard/farmer/product/list'
+                    ? 'bg-gray-800 text-white'
+                    : 'text-gray-300 hover:bg-gray-800 hover:text-white'
+                }`}
+              >
+                <span className="inline-block w-5 h-5 mr-3">•</span>
+                List
+              </Link>
+              
+            </nav>
+          )}
         </div>
 
        

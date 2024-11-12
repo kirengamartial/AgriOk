@@ -223,6 +223,20 @@ export const userApiSlice = apiSlice.injectEndpoints({
             }),
             providesTags: ['Order']
         }),
+        getInsights: builder.query({
+            query: () => ({
+                url: `/insights`,
+                method: 'GET',
+            }),
+            providesTags: ['Insights']
+        }),
+        getFarmlands: builder.query({
+            query: () => ({
+                url: `/farmlands`,
+                method: 'GET',
+            }),
+            providesTags: ['Farmlands']
+        }),
     })
 })
 
@@ -247,5 +261,7 @@ export const {
     usePlaceOrderMutation,
     useGetSingleOrderQuery,
     useDeleteOrderMutation,
-    useGetAllOrdersQuery
+    useGetAllOrdersQuery,
+    useGetInsightsQuery,
+    useGetFarmlandsQuery
 } = userApiSlice
