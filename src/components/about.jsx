@@ -23,14 +23,11 @@ const AboutSection = () => {
             </div>
             
             <h2 className="text-3xl font-bold mb-6">
-              We're Best Agriculture<br />
-              & Organic Firms
+               AgriOk: Farm for Life
             </h2>
             
             <p className="text-gray-600 mb-8">
-              Natus error sit voluptatem accusantium doloremque laudantium, totam
-              rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi
-              architecto beatae vitae dicta sunt.
+            AgriOk believes in farming for the long run—supporting healthier crops, sustainable practices, and empowered farmers. Through precision technology and eco-friendly solutions, AgriOk is transforming agriculture, making farms more resilient, productive, and future-ready.
             </p>
             
             <Link to='/about'>
@@ -59,8 +56,7 @@ const AboutSection = () => {
                        fontWeight: "bold", // Custom boldness
                      }}
                    >
-                     Agriculture &<br />
-                     Organic Farms
+                    AgriOk: Farm for Life
                    </h3>
                  </div>
 
