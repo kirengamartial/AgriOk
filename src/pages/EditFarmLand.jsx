@@ -1,9 +1,24 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Loader2 } from "lucide-react";
-import { useCreateFarmlandsMutation } from '../slices/userSlices/userApiSlice';
+import {  useEditFarmlandsMutation, useGetSingleFarmlandsQuery } from '../slices/userSlices/userApiSlice';
+import { useParams } from 'react-router-dom';
 
-const CreateFarmland = () => {
-  const [createFarm, { isLoading }] = useCreateFarmlandsMutation();
+const EditFarmland = () => {
+  const [editFarm, { isLoading }] = useEditFarmlandsMutation();
+  const {id} = useParams()
+  const {data:farmland, refetch} = useGetSingleFarmlandsQuery(id)
+
+  useEffect(() => {
+    if(farmland) {
+      setFormData({
+        sensors: farmland.sensors || '',
+        size: farmland.size || '',
+        location: farmland.location || ''
+      });
+      refetch()
+    }
+  }, [farmland])
+
   const [formData, setFormData] = useState({
     sensors: '',
     size: '',
@@ -25,8 +40,15 @@ const CreateFarmland = () => {
     setError('');
     setSuccess(false);
 
+    const data = {
+        id,
+        sensors: formData.sensors,
+        size: formData.size,
+        location: formData.location
+    }
+
     try {
-      await createFarm(formData).unwrap();
+      await editFarm(data).unwrap();
       setSuccess(true);
       setFormData({
         sensors: '',
@@ -34,14 +56,14 @@ const CreateFarmland = () => {
         location: ''
       });
     } catch (err) {
-      setError(err?.data?.message || 'Failed to create farmland');
+      setError(err?.data?.message || 'Failed to Edit farmland');
     }
   };
 
   return (
     <div className="max-w-md mx-auto p-4">
       <div className="bg-white rounded-lg shadow-lg p-6">
-        <h2 className="text-2xl font-bold text-center mb-6">Create Farmland</h2>
+        <h2 className="text-2xl font-bold text-center mb-6">Edit Farmland</h2>
         
         <form onSubmit={handleSubmit} className="space-y-6">
           {error && (
@@ -52,7 +74,7 @@ const CreateFarmland = () => {
           
           {success && (
             <div className="bg-green-50 text-green-600 p-3 rounded-md border border-green-200">
-              Farmland created successfully!
+              Farmland Edited successfully!
             </div>
           )}
 
@@ -113,10 +135,10 @@ const CreateFarmland = () => {
             {isLoading ? (
               <div className="flex items-center justify-center">
                 <Loader2 className="animate-spin mr-2 h-4 w-4" />
-                Creating...
+                Editing...
               </div>
             ) : (
-              'Create Farmland'
+              'Edit Farmland'
             )}
           </button>
         </form>
@@ -125,4 +147,4 @@ const CreateFarmland = () => {
   );
 };
 
-export default CreateFarmland;
+export default EditFarmland;

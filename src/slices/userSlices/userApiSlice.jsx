@@ -237,6 +237,36 @@ export const userApiSlice = apiSlice.injectEndpoints({
             }),
             providesTags: ['Farmlands']
         }),
+        getSingleFarmlands: builder.query({
+            query: (id) => ({
+                url: `/farmlands/${id}`,
+                method: 'GET',
+            }),
+            providesTags: ['Farmlands']
+        }),
+        createFarmlands: builder.mutation({
+            query: (data) => ({
+                url: `/farmlands`,
+                method: 'POST',
+                body: data
+            }),
+            providesTags: ['Farmlands']
+        }),
+        editFarmlands: builder.mutation({
+            query: (data) => ({
+                url: `/farmlands/${data.id}`,
+                method: 'PUT',
+                body: data
+            }),
+            providesTags: ['Farmlands']
+        }),
+        deleteFarmlands: builder.mutation({
+            query: (id) => ({
+                url: `/farmlands/${id}`,
+                method: 'DELETE'
+            }),
+            providesTags: ['Farmlands']
+        }),
     })
 })
 
@@ -263,5 +293,9 @@ export const {
     useDeleteOrderMutation,
     useGetAllOrdersQuery,
     useGetInsightsQuery,
-    useGetFarmlandsQuery
+    useGetFarmlandsQuery,
+    useCreateFarmlandsMutation,
+    useEditFarmlandsMutation,
+    useDeleteFarmlandsMutation,
+    useGetSingleFarmlandsQuery
 } = userApiSlice
