@@ -3,10 +3,14 @@ import { useGetTrendingQuery, useDeleteTrendingMutation } from '../slices/userSl
 import { Link } from 'react-router-dom';
 import { Pencil, Trash2 } from 'lucide-react';
 import toast from 'react-hot-toast';
+import { useSelector } from 'react-redux';
 
 const FarmerTrendingPage = () => {
   const { data: trending, isLoading, refetch } = useGetTrendingQuery();
   const [deleteTrending, { isLoading: isDeleting }] = useDeleteTrendingMutation();
+  const {userInfo} = useSelector(state => state.auth)
+
+  const getBaseRoute = () => userInfo.isAdmin ? 'admin' : 'farmer';
 
   useEffect(() => {
   if(trending) {
@@ -39,7 +43,7 @@ const FarmerTrendingPage = () => {
       <div className="mb-6 flex justify-between items-center">
         <h2 className="text-2xl font-semibold text-gray-800">Trending Items</h2>
         <Link
-          to="/dashboard/farmer/trending/create"
+          to={`/dashboard/${getBaseRoute()}/trending/create`}
           className="bg-orange-500 text-white px-4 py-2 rounded-md hover:bg-orange-600 transition-colors"
         >
           Add New Posts
@@ -81,7 +85,7 @@ const FarmerTrendingPage = () => {
                         alt={item.title}
                         className="h-full w-full object-cover"
                         onError={(e) => {
-                          e.target.src = '/api/placeholder/80/80'; // Fallback image
+                          e.target.src = '/api/placeholder/80/80';
                         }}
                       />
                     </div>
@@ -101,7 +105,7 @@ const FarmerTrendingPage = () => {
                   <td className="px-6 py-4 whitespace-nowrap text-sm">
                     <div className="flex space-x-3">
                       <Link
-                        to={`/dashboard/farmer/trending/edit/${item.id}`}
+                        to={`/dashboard/${getBaseRoute()}/trending/edit/${item.id}`}
                         className="text-blue-600 hover:text-blue-900 transition-colors"
                       >
                         <Pencil className="h-5 w-5" />

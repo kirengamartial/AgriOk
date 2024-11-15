@@ -12,6 +12,7 @@ const AppAside = () => {
   const navigate = useNavigate();
   const [toggleLogout, setToggleLogout] = useState(false);
   const [toggleFarmland, setToggleFarmland] = useState(false);
+  const [toggleTrending, setToggleTrending] = useState(false);
   const [logout] = useLogoutMutation()
 
   const handleLogout = async() => {
@@ -78,7 +79,7 @@ const AppAside = () => {
         <div className="px-3 py-4">
           <div 
             className="px-3 flex items-center justify-between cursor-pointer group"
-            onClick={() => setToggleFarmland(!toggleFarmland)}
+            onClick={() => setToggleTrending(!toggleTrending)}
           >
             <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider">
               TRENDING
@@ -86,13 +87,13 @@ const AppAside = () => {
             <FaChevronDown 
               size={12} 
               className={`text-gray-400 transition-transform duration-200 ${
-                toggleFarmland ? 'transform rotate-180' : ''
+                toggleTrending ? 'transform rotate-180' : ''
               }`}
             />
           </div>
           
           {/* Products Dropdown */}
-          {toggleFarmland && (
+          {toggleTrending && (
             <nav className="mt-3 space-y-1 pl-3">
               <Link
                 to="/dashboard/farmer/trending"

@@ -2,10 +2,14 @@ import React, { useState } from 'react';
 import { useCreateTrendingMutation } from '../slices/userSlices/userApiSlice';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
+import { useSelector } from 'react-redux';
 
 const CreateTrendingForm = () => {
   const [createTrending, { isLoading }] = useCreateTrendingMutation();
   const navigate = useNavigate();
+  const {userInfo} = useSelector(state => state.auth)
+
+  const getBaseRoute = () => userInfo.isAdmin ? 'admin' : 'farmer';
   
   const [formData, setFormData] = useState({
     title: '',
@@ -83,7 +87,7 @@ const CreateTrendingForm = () => {
 
       await createTrending(data).unwrap();
       toast.success('Created successfully');
-      navigate('/dashboard/farmer/trending');
+      navigate(`/dashboard/${getBaseRoute()}/trending`);
     } catch (err) {
       console.error('Creation failed:', err);
       toast.error(err?.data?.message || 'Failed to create trending news');

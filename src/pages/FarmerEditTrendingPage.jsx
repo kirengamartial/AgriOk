@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useEditTrendingMutation, useGetSingleTrendingQuery } from '../slices/userSlices/userApiSlice';
+import { useGetSingleTrendingQuery } from '../slices/userSlices/userApiSlice';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { useParams } from 'react-router-dom';
@@ -11,6 +11,8 @@ const EditTrendingForm = () => {
   const navigate = useNavigate();
   const {userInfo} = useSelector(state => state.auth)
   const [isLoading, setIsLoading] = useState(false)
+
+  const getBaseRoute = () => userInfo.isAdmin ? 'admin' : 'farmer';
 
   useEffect(() => {
     if(trending) {
@@ -102,7 +104,7 @@ const EditTrendingForm = () => {
         body: data
       })
       toast.success('Edited successfully');
-      navigate('/dashboard/farmer/trending');
+      navigate(`/dashboard/${getBaseRoute()}/trending`);
     } catch (err) {
       console.error('Creation failed:', err);
       toast.error(err?.data?.detail || 'Failed to create trending news');

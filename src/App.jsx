@@ -76,6 +76,9 @@ const App = () => {
           <Route path='admin/farmland/create' element={<CreateFarmland/>}/>
           <Route path='admin/farmland/edit/:id' element={<EditFarmland/>}/>
           <Route path='admin/farmland/list' element={<FarmLand/>}/>
+          <Route path='admin/trending/create' element={<FarmerCreateTrendingPage/>}/>
+          <Route path='admin/trending/edit/:id' element={<FarmerEditTrendingPage/>}/>
+          <Route path='admin/trending' element={<FarmerTrendingPage/>}/>
         </Route>
         </Route>
 
