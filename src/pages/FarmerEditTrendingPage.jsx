@@ -1,11 +1,26 @@
-import React, { useState } from 'react';
-import { useCreateTrendingMutation } from '../slices/userSlices/userApiSlice';
+import React, { useEffect, useState } from 'react';
+import { useEditTrendingMutation, useGetSingleTrendingQuery } from '../slices/userSlices/userApiSlice';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
+import { useParams } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
-const CreateTrendingForm = () => {
-  const [createTrending, { isLoading }] = useCreateTrendingMutation();
+const EditTrendingForm = () => {
+  const {id} = useParams()
+  const {data: trending, refetch} = useGetSingleTrendingQuery(id)
   const navigate = useNavigate();
+  const {userInfo} = useSelector(state => state.auth)
+  const [isLoading, setIsLoading] = useState(false)
+
+  useEffect(() => {
+    if(trending) {
+      setFormData({
+        title: trending.title || '',
+        content: trending.content || ''
+      });
+      refetch()
+    }
+  }, [trending])
   
   const [formData, setFormData] = useState({
     title: '',
@@ -67,7 +82,7 @@ const CreateTrendingForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+    setIsLoading(true)
     if (!validateForm()) {
       toast.error('Please fix the form errors.');
       return;
@@ -80,13 +95,19 @@ const CreateTrendingForm = () => {
       if (formData.image) {
         data.append('image', formData.image);
       }
-
-      await createTrending(data).unwrap();
-      toast.success('Created successfully');
+      const token = userInfo.access_token
+      await fetch(`https://agriok-api.onrender.com/api/posts/${id}`, {
+        method: 'PUT',
+        headers: {"Authorization" : `Bearer ${token}`},
+        body: data
+      })
+      toast.success('Edited successfully');
       navigate('/dashboard/farmer/trending');
     } catch (err) {
       console.error('Creation failed:', err);
-      toast.error(err?.data?.message || 'Failed to create trending news');
+      toast.error(err?.data?.detail || 'Failed to create trending news');
+    } finally {
+      setIsLoading(false)
     }
   };
 
@@ -157,11 +178,11 @@ const CreateTrendingForm = () => {
           disabled={isLoading}
           className="w-full bg-orange-500 text-white py-2 px-4 rounded-md hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          {isLoading ? "Creating..." : "Create"}
+          {isLoading ? "Editing..." : "Edit"}
         </button>
       </form>
     </div>
   );
 };
 
-export default CreateTrendingForm;
+export default EditTrendingForm;

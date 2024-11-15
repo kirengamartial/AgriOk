@@ -37,6 +37,9 @@ import OrderDetails from './pages/SingleOrderPage'
 import FarmLand from './pages/FarmLand'
 import CreateFarmland from './pages/CreateFarmland'
 import EditFarmland from './pages/EditFarmLand'
+import FarmerTrendingPage from './pages/FarmerTrendingPage'
+import FarmerEditTrendingPage from './pages/FarmerEditTrendingPage'
+
 
 const App = () => {
   const router = createHashRouter(
@@ -80,6 +83,8 @@ const App = () => {
         <Route path='' element={<FarmerLayout/>}>
           <Route path='farmer' element={<FarmerHomePage/>}/>
           <Route path='farmer/trending/create' element={<FarmerCreateTrendingPage/>}/>
+          <Route path='farmer/trending/edit/:id' element={<FarmerEditTrendingPage/>}/>
+          <Route path='farmer/trending' element={<FarmerTrendingPage/>}/>
           <Route path='farmer/farmland/create' element={<CreateFarmland/>}/>
           <Route path='farmer/farmland/edit/:id' element={<EditFarmland/>}/>
           <Route path='farmer/farmland/list' element={<FarmLand/>}/>

@@ -267,6 +267,43 @@ export const userApiSlice = apiSlice.injectEndpoints({
             }),
             providesTags: ['Farmlands']
         }),
+        CreateTrending: builder.mutation({
+            query: (data) => ({
+                url: `/posts`,
+                method: 'POST',
+                body: data
+            }),
+            providesTags: ['Trending']
+        }),
+        EditTrending: builder.mutation({
+            query: (data) => ({
+                url: `/posts/${data.id}`,
+                method: 'PUT',
+                body: data
+            }),
+            providesTags: ['Trending']
+        }),
+        getTrending: builder.query({
+            query: () => ({
+                url: `/posts`,
+                method: 'GET'
+            }),
+            providesTags: ['Trending']
+        }),
+        getSingleTrending: builder.query({
+            query: (id) => ({
+                url: `/posts/${id}`,
+                method: 'GET'
+            }),
+            providesTags: ['Trending']
+        }),
+        deleteTrending: builder.mutation({
+            query: (id) => ({
+                url: `/posts/${id}`,
+                method: 'DELETE'
+            }),
+            providesTags: ['Trending']
+        }),
     })
 })
 
@@ -297,5 +334,10 @@ export const {
     useCreateFarmlandsMutation,
     useEditFarmlandsMutation,
     useDeleteFarmlandsMutation,
-    useGetSingleFarmlandsQuery
+    useGetSingleFarmlandsQuery,
+    useCreateTrendingMutation,
+    useEditTrendingMutation,
+    useGetTrendingQuery,
+    useGetSingleTrendingQuery,
+    useDeleteTrendingMutation
 } = userApiSlice

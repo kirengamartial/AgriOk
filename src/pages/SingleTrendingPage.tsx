@@ -1,12 +1,24 @@
 import React from 'react';
 import section from '../../public/Section2.png';
-import image from '../../public/Rectangle 43.png';
 import { Calendar, Clock, Share2, Bookmark, MessageCircle, Heart, TrendingUp } from 'lucide-react';
+import { useGetSingleTrendingQuery } from '../slices/userSlices/userApiSlice';
+import { useParams } from 'react-router-dom';
 
 const BlogPost = () => {
+  const { id } = useParams();
+  const { data: trending, isLoading } = useGetSingleTrendingQuery(id);
+
+  if (isLoading) {
+    return (
+      <div className="w-full min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-xl text-gray-600">Loading...</div>
+      </div>
+    );
+  }
+
   return (
     <div className="w-full min-h-screen bg-gray-50">
-      {/* Hero Section */}
+      {/* Hero Section - Kept unchanged */}
       <div className="relative h-96">
         <div 
           className="absolute inset-0 bg-cover bg-center transform transition duration-700 hover:scale-105"
@@ -30,34 +42,31 @@ const BlogPost = () => {
         </div>
       </div>
 
-      {/* Content Section */}
+      {/* Content Section - Using trending data */}
       <div className="mx-auto max-w-4xl px-6 py-12">
         {/* Article Meta */}
         <div className="flex flex-wrap items-center justify-center gap-4 mb-8 text-sm text-gray-600">
           <div className="flex items-center">
             <Calendar className="w-4 h-4 mr-2" />
-            March 12, 2024
+            {new Date(trending?.created_at).toLocaleDateString('en-US', {
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric'
+            })}
           </div>
-          <div className="flex items-center">
-            <Clock className="w-4 h-4 mr-2" />
-            5 min read
-          </div>
-          <div className="flex items-center">
-            <MessageCircle className="w-4 h-4 mr-2" />
-            24 comments
-          </div>
+         
         </div>
 
         {/* Article Title */}
         <h2 className="mb-12 text-center text-3xl md:text-4xl font-bold text-gray-900 leading-tight max-w-3xl mx-auto">
-          I try to look at the design from a more conceptual standpoint
+          {trending?.title}
         </h2>
 
         {/* Main Image Container */}
         <div className="mb-12 rounded-xl overflow-hidden shadow-lg">
           <img
-            src={image}
-            alt="Concept"
+            src={trending?.image}
+            alt={trending?.title}
             className="w-full object-cover transform transition duration-500 hover:scale-105"
           />
         </div>
@@ -68,13 +77,13 @@ const BlogPost = () => {
             <div className="flex items-center gap-4">
               <div className="h-12 w-12 overflow-hidden rounded-full bg-gray-200 ring-2 ring-yellow-400">
                 <img
-                  src="/api/placeholder/100/100"
-                  alt="Marcel"
+                  src={trending?.user?.photo || "/api/placeholder/100/100"}
+                  alt={trending?.user?.name || "Author"}
                   className="w-full h-full object-cover"
                 />
               </div>
               <div>
-                <h3 className="font-semibold text-gray-900">Marcel</h3>
+                <h3 className="font-semibold text-gray-900">{trending?.user?.name || "Author"}</h3>
                 <p className="text-sm text-gray-600">Senior Design Lead</p>
               </div>
             </div>
@@ -94,11 +103,7 @@ const BlogPost = () => {
           </div>
           
           <p className="text-gray-600 leading-relaxed mb-6">
-            Lorem ipsum is simply dummy text of the printing and typesetting industry. Lorem ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
-          </p>
-
-          <p className="text-gray-600 leading-relaxed mb-6">
-            It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages.
+            {trending?.content}
           </p>
 
           {/* Tags */}
