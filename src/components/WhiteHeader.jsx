@@ -136,33 +136,35 @@ const WhiteHeader = () => {
         </div>
 
         {isMenuOpen && (
-          <div className="md:hidden border-t">
-            <div className="px-4 py-2 space-y-2">
-              <Link to="/" className="block text-sm text-gray-600 hover:text-gray-900 py-2">
-                Home
-              </Link>
-              <Link to="/shop" className="block text-sm text-gray-600 hover:text-gray-900 py-2">
-                Shop
-              </Link>
-              <Link to="/about" className="block text-sm text-gray-600 hover:text-gray-900 py-2">
-                About
-              </Link>
-              <Link to="/trending" className="block text-sm text-gray-600 hover:text-gray-900 py-2">
-                Trending
-              </Link>
-              {userInfo?.role === 'admin' && (
-                <Link to="/dashboard/admin" className="block text-sm text-gray-600 hover:text-gray-900 py-2">
-                  Dashboard
-                </Link>
-              )}
-              {userInfo?.role === 'farmer' && (
-                <Link to="/dashboard/farmer" className="block text-sm text-gray-600 hover:text-gray-900 py-2">
-                  Dashboard
-                </Link>
-              )}
-            </div>
-          </div>
-        )}
+  <div className="md:hidden border-t">
+    <div className="px-4 py-2 space-y-2">
+      <Link to="/" className="block text-sm text-gray-600 hover:text-gray-900 py-2">
+        Home
+      </Link>
+      <Link to="/shop" className="block text-sm text-gray-600 hover:text-gray-900 py-2">
+        Shop
+      </Link>
+      <Link to="/about" className="block text-sm text-gray-600 hover:text-gray-900 py-2">
+        About
+      </Link>
+      <Link to="/trending" className="block text-sm text-gray-600 hover:text-gray-900 py-2">
+        Trending
+      </Link>
+      {/* Admin Dashboard Link */}
+      {userInfo && userInfo.isAdmin === true && (
+        <Link to="/dashboard/admin" className="block text-sm text-gray-600 hover:text-gray-900 py-2">
+          Dashboard
+        </Link>
+      )}
+      {/* Farmer Dashboard Link */}
+      {userInfo && userInfo.isAdmin === false && (
+        <Link to="/dashboard/farmer" className="block text-sm text-gray-600 hover:text-gray-900 py-2">
+          Dashboard
+        </Link>
+      )}
+    </div>
+  </div>
+)}
     </header>
   );
 };

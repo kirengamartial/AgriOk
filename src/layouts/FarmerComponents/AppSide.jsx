@@ -1,165 +1,72 @@
-import React, { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { FaChevronDown } from "react-icons/fa";
-import { logOut } from "../../slices/userSlices/authSlice";
-import { useLogoutMutation } from "../../slices/userSlices/userApiSlice";
+import React, { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
+import { FaBars, FaTimes } from "react-icons/fa";
+import NavigationContent from "./NavigationContent";
 
 const AppAside = () => {
   const location = useLocation();
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const [toggleLogout, setToggleLogout] = useState(false);
-  const [toggleFarmland, setToggleFarmland] = useState(false);
-  const [toggleTrending, setToggleTrending] = useState(false);
-  const [logout] = useLogoutMutation()
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  const handleLogout = async() => {
-    try {
-      dispatch(logOut())
-      navigate('/login')
-    } catch (error) {
-      console.log(error)
-    }
-    }
+  // Close mobile menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (isMobileMenuOpen && !event.target.closest('.mobile-menu') && !event.target.closest('.menu-button')) {
+        setIsMobileMenuOpen(false);
+      }
+    };
 
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [isMobileMenuOpen]);
+
+  // Close mobile menu when route changes
+  useEffect(() => {
+    setIsMobileMenuOpen(false);
+  }, [location]);
+
+
+ 
   return (
-    <aside className="h-screen w-60 bg-[#1a1a1a] text-white flex flex-col">
-      {/* Profile Section */}
-      <div className="p-4 border-b border-gray-800">
-        <div className="flex items-center space-x-2">
-          <Link to='/'>
-          <h2 className="text-lg font-medium">AgriOk</h2>
-          </Link>
-          <button 
-            onClick={() => setToggleLogout(!toggleLogout)}
-            className="text-gray-400 hover:text-white"
-          >
-            <FaChevronDown size={12} />
-          </button>
-        </div>
-        
-        {/* Logout Popup */}
-        {toggleLogout && (
-          <div className="absolute mt-2 w-48 rounded-md shadow-lg bg-[#262626] ring-1 ring-black ring-opacity-5">
-            <div className="py-1">
-              <button
-                className="block w-full text-left px-4 py-2 text-sm text-gray-300 hover:bg-gray-700"
-                onClick={handleLogout}
-              >
-                Sign out
-              </button>
-            </div>
-          </div>
-        )}
+    <>
+      {/* Mobile Menu Button */}
+      <div className="lg:hidden fixed top-4 left-4 z-50 w-12">
+        <button
+          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          className="p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none menu-button"
+          aria-label="Toggle menu"
+        >
+          {isMobileMenuOpen ? (
+            <FaTimes size={24} />
+          ) : (
+            <FaBars size={24} />
+          )}
+        </button>
       </div>
 
-      {/* Navigation Section */}
-      <div className="flex-1 overflow-y-auto">
-        {/* General Section */}
-       
+      {/* Overlay */}
+      {isMobileMenuOpen && (
+        <div 
+          className="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden"
+          onClick={() => setIsMobileMenuOpen(false)}
+        />
+      )}
 
-        <div className="px-3 py-4">
-          <p className="px-3 text-xs font-semibold text-gray-400 uppercase tracking-wider">
-            Insights
-          </p>
-          <nav className="mt-3 space-y-1">
-            <Link
-              to="/dashboard/farmer"
-              className="flex items-center px-3 py-2 text-sm text-gray-300 rounded-md hover:bg-gray-800 hover:text-white"
-            >
-              <span className="inline-block w-5 h-5 mr-3">📊</span>
-              Insights
-            </Link>
-          </nav>
+      {/* Mobile Sidebar */}
+      <div
+        className={`fixed inset-y-0 left-0 lg:hidden z-40 w-60 transform ${
+          isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"
+        } transition-transform duration-300 ease-in-out mobile-menu`}
+      >
+        <div className="h-full w-full bg-[#1a1a1a] text-white flex flex-col">
+          <NavigationContent />
         </div>
-        
-     
-        <div className="px-3 py-4">
-          <div 
-            className="px-3 flex items-center justify-between cursor-pointer group"
-            onClick={() => setToggleTrending(!toggleTrending)}
-          >
-            <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider">
-              TRENDING
-            </p>
-            <FaChevronDown 
-              size={12} 
-              className={`text-gray-400 transition-transform duration-200 ${
-                toggleTrending ? 'transform rotate-180' : ''
-              }`}
-            />
-          </div>
-          
-          {/* Products Dropdown */}
-          {toggleTrending && (
-            <nav className="mt-3 space-y-1 pl-3">
-              <Link
-                to="/dashboard/farmer/trending"
-                className={`flex items-center px-3 py-2 text-sm rounded-md transition-colors ${
-                  location.pathname === '/dashboard/farmer/trending'
-                    ? 'bg-gray-800 text-white'
-                    : 'text-gray-300 hover:bg-gray-800 hover:text-white'
-                }`}
-              >
-                <span className="inline-block w-5 h-5 mr-3">•</span>
-                List
-              </Link>
-              <Link
-                to="/dashboard/farmer/trending/create"
-                className={`flex items-center px-3 py-2 text-sm rounded-md transition-colors ${
-                  location.pathname === '/dashboard/farmer/trending/create'
-                    ? 'bg-gray-800 text-white'
-                    : 'text-gray-300 hover:bg-gray-800 hover:text-white'
-                }`}
-              >
-                <span className="inline-block w-5 h-5 mr-3">•</span>
-                Create
-              </Link>
-              
-            </nav>
-          )}
-        </div>
-     
-        <div className="px-3 py-4">
-          <div 
-            className="px-3 flex items-center justify-between cursor-pointer group"
-            onClick={() => setToggleFarmland(!toggleFarmland)}
-          >
-            <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider">
-              Farmland
-            </p>
-            <FaChevronDown 
-              size={12} 
-              className={`text-gray-400 transition-transform duration-200 ${
-                toggleFarmland ? 'transform rotate-180' : ''
-              }`}
-            />
-          </div>
-          
-          {/* Products Dropdown */}
-          {toggleFarmland && (
-            <nav className="mt-3 space-y-1 pl-3">
-              <Link
-                to="/dashboard/farmer/farmland/list"
-                className={`flex items-center px-3 py-2 text-sm rounded-md transition-colors ${
-                  location.pathname === '/dashboard/farmer/product/list'
-                    ? 'bg-gray-800 text-white'
-                    : 'text-gray-300 hover:bg-gray-800 hover:text-white'
-                }`}
-              >
-                <span className="inline-block w-5 h-5 mr-3">•</span>
-                List
-              </Link>
-              
-            </nav>
-          )}
-        </div>
-
-       
       </div>
-    </aside>
+
+      {/* Desktop Sidebar */}
+      <aside className="hidden lg:flex h-screen min-w-[240px] bg-[#1a1a1a] text-white flex-col flex-shrink-0">
+        <NavigationContent />
+      </aside>
+    </>
   );
 };
 

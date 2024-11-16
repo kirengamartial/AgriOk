@@ -5,12 +5,10 @@ import AppHeader from "../FarmerComponents/AppHeader.jsx";
 import React from "react";
 import { Toaster } from "react-hot-toast";
 
-
-const FarmerLayout= () => {
-
+const AdminLayout = () => {
   return (
-  <>
-     <Toaster 
+    <>
+      <Toaster 
         position="top-center"
         toastOptions={{
           duration: 4000,
@@ -36,15 +34,17 @@ const FarmerLayout= () => {
           },
         }}
       />
-    <AppLayout
-      aside={
-        <AppAside/>
-      }
-      header={<AppHeader/>}
-      main={<Outlet />}
-    />
-  </>
+      <AppLayout
+        aside={<AppAside />}
+        header={<AppHeader />}
+        main={
+          <div className="w-full max-w-[2000px] mx-auto">
+            <Outlet />
+          </div>
+        }
+      />
+    </>
   );
 };
 
-export default FarmerLayout;
+export default AdminLayout;
