@@ -290,6 +290,13 @@ export const userApiSlice = apiSlice.injectEndpoints({
             }),
             providesTags: ['Trending']
         }),
+        getUserTrending: builder.query({
+            query: () => ({
+                url: `/posts/user`,
+                method: 'GET'
+            }),
+            providesTags: ['Trending']
+        }),
         getSingleTrending: builder.query({
             query: (id) => ({
                 url: `/posts/${id}`,
@@ -339,5 +346,6 @@ export const {
     useEditTrendingMutation,
     useGetTrendingQuery,
     useGetSingleTrendingQuery,
-    useDeleteTrendingMutation
+    useDeleteTrendingMutation,
+    useGetUserTrendingQuery
 } = userApiSlice

@@ -1,12 +1,12 @@
 import React, { useEffect } from 'react';
-import { useGetTrendingQuery, useDeleteTrendingMutation } from '../slices/userSlices/userApiSlice';
+import { useGetUserTrendingQuery, useDeleteTrendingMutation } from '../slices/userSlices/userApiSlice';
 import { Link } from 'react-router-dom';
 import { Pencil, Trash2 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { useSelector } from 'react-redux';
 
 const FarmerTrendingPage = () => {
-  const { data: trending, isLoading, refetch } = useGetTrendingQuery();
+  const { data: trending, isLoading, refetch } = useGetUserTrendingQuery();
   const [deleteTrending, { isLoading: isDeleting }] = useDeleteTrendingMutation();
   const {userInfo} = useSelector(state => state.auth)
 

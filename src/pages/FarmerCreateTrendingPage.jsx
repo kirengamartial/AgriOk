@@ -85,7 +85,7 @@ const CreateTrendingForm = () => {
         data.append('image', formData.image);
       }
 
-      await createTrending(data).unwrap();
+      const res = await createTrending(data).unwrap();
       toast.success('Created successfully');
       navigate(`/dashboard/${getBaseRoute()}/trending`);
     } catch (err) {

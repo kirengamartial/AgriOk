@@ -83,8 +83,8 @@ const BlogPost = () => {
                 />
               </div>
               <div>
-                <h3 className="font-semibold text-gray-900">{trending?.user?.name || "Author"}</h3>
-                <p className="text-sm text-gray-600">Senior Design Lead</p>
+                <h3 className="font-semibold text-gray-900">{trending?.user?.first_name || "Author"}</h3>
+                <p className="text-sm text-gray-600">Author</p>
               </div>
             </div>
             
