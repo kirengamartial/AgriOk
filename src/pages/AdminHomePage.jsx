@@ -14,6 +14,7 @@ const Dashboard = () => {
   const [currentPage, setCurrentPage] = React.useState(1);
   const itemsPerPage = 5;
 
+
   const processedOrders = useMemo(() => {
     return orders.map(order => ({
       id: order.id,
@@ -50,15 +51,16 @@ const Dashboard = () => {
   const totalPages = Math.ceil(processedOrders.length / itemsPerPage);
 
   if (isLoading) {
-    return ( 
-    <div className="min-h-screen flex items-center justify-center">
-      <Spinner />
-    </div>
-    )}
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <Spinner />
+      </div>
+    );
+  }
 
   if (isError) {
     return (
-      <div className="min-h-screen bg-gray-50 p-6">
+      <div className="min-h-screen bg-gray-50 p-4 sm:p-6">
         <div className="bg-red-50 p-4 rounded-lg mb-6">
           <div className="flex items-center">
             <AlertCircle className="text-red-500 mr-2" size={20} />
@@ -72,10 +74,10 @@ const Dashboard = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
-      <div className="flex gap-6 mb-6">
-        <div className="w-1/3">
-          <div className="grid grid-cols-2 gap-6">
+    <div className="min-h-screen bg-gray-50 p-4 sm:p-6">
+      <div className="flex flex-col lg:flex-row gap-6 mb-6">
+        <div className="w-full lg:w-1/3">
+          <div className="grid grid-cols-2 sm:grid-cols-2 gap-4 sm:gap-6">
             <StatsCard
               icon={Package}
               title="Total Orders"
@@ -107,10 +109,10 @@ const Dashboard = () => {
           </div>
         </div>
 
-        <div className="w-[600px] bg-white p-6 rounded-lg shadow-sm">
+        <div className="w-full lg:w-[600px] bg-white p-4 sm:p-6 rounded-lg shadow-sm">
           <h2 className="text-lg font-semibold mb-6">Order Analytics</h2>
-          <div className="flex gap-4">
-            <div className="w-1/2">
+          <div className="flex flex-col sm:flex-row gap-4">
+            <div className="w-full sm:w-1/2">
               <h3 className="text-sm font-medium text-gray-600 mb-2 text-center">Order Status Distribution</h3>
               <div className="h-64">
                 <ResponsiveContainer width="100%" height="100%">
@@ -139,7 +141,7 @@ const Dashboard = () => {
               </div>
             </div>
             
-            <div className="w-1/2">
+            <div className="w-full sm:w-1/2">
               <h3 className="text-sm font-medium text-gray-600 mb-2 text-center">Revenue by Day</h3>
               <div className="h-64">
                 <ResponsiveContainer width="100%" height="100%">
@@ -172,18 +174,18 @@ const Dashboard = () => {
       </div>
 
       <div className="bg-white rounded-lg shadow-sm">
-        <div className="flex justify-between items-center p-6 border-b">
+        <div className="flex justify-between items-center p-4 sm:p-6 border-b">
           <h2 className="text-lg font-semibold">Recent Orders</h2>
         </div>
         <div className="overflow-x-auto">
-          <table className="w-full">
+          <table className="w-full min-w-[720px]">
             <thead className="bg-gray-50">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Order ID</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Products</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total Amount</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Order ID</th>
+                <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Products</th>
+                <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total Amount</th>
+                <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
@@ -191,19 +193,19 @@ const Dashboard = () => {
                 .slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
                 .map((order) => (
                   <tr key={order.id}>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{order.id}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{order.date}</td>
-                    <td className="px-6 py-4 text-sm text-gray-500">
+                    <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-xs sm:text-sm text-gray-900">{order.id}</td>
+                    <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-xs sm:text-sm text-gray-500">{order.date}</td>
+                    <td className="px-4 sm:px-6 py-4 text-xs sm:text-sm text-gray-500">
                       {order.items.map((item, idx) => (
                         <div key={idx}>
                           {item.product} x{item.quantity}
                         </div>
                       ))}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                    <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-xs sm:text-sm text-gray-900">
                       ${order.total}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
+                    <td className="px-4 sm:px-6 py-4 whitespace-nowrap">
                       <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
                         order.status === 'Completed' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'
                       }`}>

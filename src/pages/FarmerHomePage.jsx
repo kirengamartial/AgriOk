@@ -29,7 +29,7 @@ const FieldMonitoringDashboard = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gray-100 p-8 flex items-center justify-center">
+      <div className="min-h-screen bg-gray-100 p-4 sm:p-8 flex items-center justify-center">
         <div className="w-full max-w-3xl">
           <Alert>
             <div className="flex items-center gap-2">
@@ -45,7 +45,7 @@ const FieldMonitoringDashboard = () => {
 
   if (isError) {
     return (
-      <div className="min-h-screen bg-gray-100 p-8">
+      <div className="min-h-screen bg-gray-100 p-4 sm:p-8">
         <div className="w-full max-w-3xl">
           <Alert variant="destructive">
             <AlertCircle className="h-4 w-4 text-red-600" />
@@ -63,7 +63,7 @@ const FieldMonitoringDashboard = () => {
 
   if (!insights || insights.length === 0) {
     return (
-      <div className="min-h-screen bg-gray-100 p-8">
+      <div className="min-h-screen bg-gray-100 p-4 sm:p-8">
         <div className="w-full max-w-3xl">
           <Alert>
             <AlertCircle className="h-4 w-4 text-gray-600" />
@@ -80,38 +80,41 @@ const FieldMonitoringDashboard = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 p-8">
+    <div className="min-h-screen bg-gray-100 p-4 sm:p-8">
       {/* Metrics Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-        <div className="bg-white rounded-lg p-6 shadow-lg hover:shadow-xl transition-shadow duration-300">
-          <div className="flex items-center gap-4">
-            <div className="p-3 bg-red-50 rounded-full">
-              <Thermometer className="w-6 h-6 text-red-500" />
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 mb-6">
+        <div className="bg-white rounded-lg p-4 sm:p-6 shadow-lg hover:shadow-xl transition-shadow duration-300">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
+            <div className="p-3 bg-red-50 rounded-full self-start">
+              <Thermometer className="w-5 h-5 sm:w-6 sm:h-6 text-red-500" />
             </div>
-            <div className="text-gray-800">
-              <div className="text-xl font-bold">{getTemperatureInsight()}</div>
+            <div className="flex-1 min-w-0">
+              <div className="text-base sm:text-xl font-bold text-gray-800 break-words">{getTemperatureInsight()}</div>
               <div className="text-xs text-gray-500 mt-1">TEMPERATURE</div>
+              <div className="text-xs sm:text-sm text-gray-600 mt-2">
+                The temperature at your farm is too high. You should consider irrigating the farm
+              </div>
             </div>
           </div>
         </div>
-        <div className="bg-white rounded-lg p-6 shadow-lg hover:shadow-xl transition-shadow duration-300">
-          <div className="flex items-center gap-4">
-            <div className="p-3 bg-blue-50 rounded-full">
-              <Droplets className="w-6 h-6 text-blue-500" />
+        <div className="bg-white rounded-lg p-4 sm:p-6 shadow-lg hover:shadow-xl transition-shadow duration-300">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
+            <div className="p-3 bg-blue-50 rounded-full self-start">
+              <Droplets className="w-5 h-5 sm:w-6 sm:h-6 text-blue-500" />
             </div>
             <div className="text-gray-800">
-              <div className="text-xl font-bold">77%</div>
+              <div className="text-base sm:text-xl font-bold">77%</div>
               <div className="text-xs text-gray-500 mt-1">HUMIDITY</div>
             </div>
           </div>
         </div>
-        <div className="bg-white rounded-lg p-6 shadow-lg hover:shadow-xl transition-shadow duration-300">
-          <div className="flex items-center gap-4">
-            <div className="p-3 bg-gray-50 rounded-full">
-              <Wind className="w-6 h-6 text-gray-500" />
+        <div className="bg-white rounded-lg p-4 sm:p-6 shadow-lg hover:shadow-xl transition-shadow duration-300">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
+            <div className="p-3 bg-gray-50 rounded-full self-start">
+              <Wind className="w-5 h-5 sm:w-6 sm:h-6 text-gray-500" />
             </div>
             <div className="text-gray-800">
-              <div className="text-xl font-bold">0 MIN</div>
+              <div className="text-base sm:text-xl font-bold">0 MIN</div>
               <div className="text-xs text-gray-500 mt-1">RAIN</div>
             </div>
           </div>
@@ -121,7 +124,7 @@ const FieldMonitoringDashboard = () => {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Scouting Reports */}
         <div className="lg:col-span-4">
-          <div className="bg-white rounded-lg p-6 shadow-lg hover:shadow-xl transition-shadow duration-300">
+          <div className="bg-white rounded-lg p-4 sm:p-6 shadow-lg hover:shadow-xl transition-shadow duration-300">
             <h2 className="text-lg font-semibold mb-6 text-gray-800 flex items-center gap-2">
               <span>LATEST INSIGHTS</span>
               <span className="text-sm bg-green-100 text-green-800 px-2 py-1 rounded-full">
@@ -132,13 +135,13 @@ const FieldMonitoringDashboard = () => {
               {insights.slice(0, 4).map((insight, index) => (
                 <div 
                   key={insight.id || index} 
-                  className="flex justify-between items-start pb-4 border-b border-gray-100 last:border-0 hover:bg-gray-50 p-2 rounded-lg transition-colors duration-200"
+                  className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2 pb-4 border-b border-gray-100 last:border-0 hover:bg-gray-50 p-2 rounded-lg transition-colors duration-200"
                 >
-                  <div>
-                    <h3 className="font-semibold text-gray-800">{insight.title?.toUpperCase()}</h3>
-                    <p className="text-gray-500 text-sm mt-1">{insight.content}</p>
+                  <div className="min-w-0">
+                    <h3 className="font-semibold text-gray-800 text-sm">{insight.title?.toUpperCase()}</h3>
+                    <p className="text-gray-500 text-xs sm:text-sm mt-1">{insight.content}</p>
                   </div>
-                  <span className="text-gray-500 text-xs whitespace-nowrap ml-4">
+                  <span className="text-gray-500 text-xs whitespace-nowrap">
                     {formatDate(insight.date_posted)}
                   </span>
                 </div>
@@ -158,20 +161,20 @@ const FieldMonitoringDashboard = () => {
       {/* What To Do Section */}
       <div className="mt-6">
         <div className="bg-white rounded-lg p-6 shadow-lg hover:shadow-xl transition-shadow duration-300">
-          <h2 className="text-lg font-semibold mb-6 text-gray-800">RECOMMENDATIONS</h2>
+          <h2 className="text-sm lg:text-lg font-semibold mb-6 text-gray-800">RECOMMENDATIONS</h2>
           <div className="space-y-6">
             {insights.map((insight, index) => (
               <div 
                 key={insight.id || index} 
-                className="grid grid-cols-1 md:grid-cols-12 gap-6 pb-6 border-b border-gray-100 last:border-0 hover:bg-gray-50 p-3 rounded-lg transition-colors duration-200"
+                className="grid grid-cols-1 md:grid-cols-12 gap-3 sm:gap-6 pb-6 border-b border-gray-100 last:border-0 hover:bg-gray-50 p-3 rounded-lg transition-colors duration-200"
               >
                 <div className="md:col-span-2">
-                  <span className="text-gray-800 font-medium">
+                  <span className="text-gray-800 font-medium text-sm">
                     {formatDate(insight.date_posted)}
                   </span>
                 </div>
                 <div className="md:col-span-10">
-                  <p className="text-gray-600">{insight.content}</p>
+                  <p className="text-gray-600 text-sm">{insight.content}</p>
                 </div>
               </div>
             ))}
