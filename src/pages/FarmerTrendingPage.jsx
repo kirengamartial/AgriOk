@@ -27,6 +27,7 @@ const FarmerTrendingPage = () => {
       }
     } catch (err) {
       toast.error(err?.data?.message || 'Failed to delete item');
+      console.log(err)
     }
   };
 
