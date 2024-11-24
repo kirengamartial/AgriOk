@@ -1,8 +1,8 @@
 import React from 'react';
-import Image1 from '../../public/image-4.jpg.png'
-import Image2 from '../../public/image-5.jpg.png'
-import Image3 from '../../public/image-6.jpg.png'
-import Image4 from '../../public/image-7.jpg.png'
+import Image1 from '../../public/images1.jpg'
+import Image2 from '../../public/images2.jpg'
+import Image3 from '../../public/images3.jpg'
+import Image4 from '../../public/images4.jpg'
 import icon from '../../public/icon-heading.png.png'
 import { Link } from 'react-router-dom';
 

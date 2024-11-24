@@ -53,7 +53,7 @@ const ShopPage = () => {
         </div>
         
         <div className="max-w-6xl relative z-10 container mx-auto h-full">
-          <h1 className="text-4xl font-bold text-white pt-24 pl-4">Discover Our Collection</h1>
+          <h1 className="text-4xl font-bold text-white pt-24 pl-4">Discover Our Shop</h1>
           <p className="text-gray-200 pl-4 mt-2">Find your perfect piece</p>
         </div>
   
