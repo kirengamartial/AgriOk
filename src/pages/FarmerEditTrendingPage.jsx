@@ -98,7 +98,7 @@ const EditTrendingForm = () => {
         data.append('image', formData.image);
       }
       const token = userInfo.access_token
-      await fetch(`https://agriok-api.onrender.com/api/posts/${id}`, {
+      await fetch(`${import.meta.env.VITE_API_URL}/api/posts/${id}`, {
         method: 'PUT',
         headers: {"Authorization" : `Bearer ${token}`},
         body: data

@@ -64,7 +64,7 @@ const EditProductForm = () => {
   
     const token = userInfo.access_token
     try {
-      const response = await fetch(`https://agriok-api.onrender.com/api/products/${id}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/products/${id}`, {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${token}`

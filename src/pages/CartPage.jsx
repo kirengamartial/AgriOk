@@ -89,7 +89,7 @@ const CartPage = () => {
     setIsCheckout(true)
   try {
     const token = userInfo.access_token
-    const res = await fetch('https://agriok-api.onrender.com/api/order/place',{
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/api/order/place`,{
       method: 'POST',
       headers: {
         "Authorization": `Bearer ${token}`,
