@@ -83,6 +83,7 @@ npm install
 3. Create a `.env` file in the root directory and add necessary environment variables:
 ```bash
 VITE_API_URL=your_api_endpoint
+VITE_MAP_API_KEY=your_api_key
 ```
 
 4. Start the development server:
