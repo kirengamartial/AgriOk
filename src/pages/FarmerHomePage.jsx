@@ -82,44 +82,6 @@ const FieldMonitoringDashboard = () => {
   return (
     <div className="min-h-screen bg-gray-100 p-4 sm:p-8">
       {/* Metrics Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 mb-6">
-        <div className="bg-white rounded-lg p-4 sm:p-6 shadow-lg hover:shadow-xl transition-shadow duration-300">
-          <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
-            <div className="p-3 bg-red-50 rounded-full self-start">
-              <Thermometer className="w-5 h-5 sm:w-6 sm:h-6 text-red-500" />
-            </div>
-            <div className="flex-1 min-w-0">
-              <div className="text-base sm:text-xl font-bold text-gray-800 break-words">{getTemperatureInsight()}</div>
-              <div className="text-xs text-gray-500 mt-1">TEMPERATURE</div>
-              <div className="text-xs sm:text-sm text-gray-600 mt-2">
-                The temperature at your farm is too high. You should consider irrigating the farm
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="bg-white rounded-lg p-4 sm:p-6 shadow-lg hover:shadow-xl transition-shadow duration-300">
-          <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
-            <div className="p-3 bg-blue-50 rounded-full self-start">
-              <Droplets className="w-5 h-5 sm:w-6 sm:h-6 text-blue-500" />
-            </div>
-            <div className="text-gray-800">
-              <div className="text-base sm:text-xl font-bold">77%</div>
-              <div className="text-xs text-gray-500 mt-1">HUMIDITY</div>
-            </div>
-          </div>
-        </div>
-        <div className="bg-white rounded-lg p-4 sm:p-6 shadow-lg hover:shadow-xl transition-shadow duration-300">
-          <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
-            <div className="p-3 bg-gray-50 rounded-full self-start">
-              <Wind className="w-5 h-5 sm:w-6 sm:h-6 text-gray-500" />
-            </div>
-            <div className="text-gray-800">
-              <div className="text-base sm:text-xl font-bold">0 MIN</div>
-              <div className="text-xs text-gray-500 mt-1">RAIN</div>
-            </div>
-          </div>
-        </div>
-      </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Scouting Reports */}
