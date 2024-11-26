@@ -311,6 +311,13 @@ export const userApiSlice = apiSlice.injectEndpoints({
             }),
             providesTags: ['Trending']
         }),
+        getSensorData: builder.query({
+            query: (time) => ({
+                url: `/sensor-data?time_range=${time}`,
+                method: 'GET'
+            }),
+            providesTags: ['Sensor']
+        }),
     })
 })
 
@@ -347,5 +354,6 @@ export const {
     useGetTrendingQuery,
     useGetSingleTrendingQuery,
     useDeleteTrendingMutation,
-    useGetUserTrendingQuery
+    useGetUserTrendingQuery,
+    useGetSensorDataQuery
 } = userApiSlice

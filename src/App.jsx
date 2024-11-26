@@ -39,7 +39,7 @@ import CreateFarmland from './pages/CreateFarmland'
 import EditFarmland from './pages/EditFarmLand'
 import FarmerTrendingPage from './pages/FarmerTrendingPage'
 import FarmerEditTrendingPage from './pages/FarmerEditTrendingPage'
-
+import SensorDataPage from './pages/SensorDataPage'
 
 const App = () => {
   const router = createHashRouter(
@@ -79,6 +79,7 @@ const App = () => {
           <Route path='admin/trending/create' element={<FarmerCreateTrendingPage/>}/>
           <Route path='admin/trending/edit/:id' element={<FarmerEditTrendingPage/>}/>
           <Route path='admin/trending' element={<FarmerTrendingPage/>}/>
+          <Route path='admin/farmland/sensor-data/:id' element={<SensorDataPage/>}/>
         </Route>
         </Route>
 
@@ -91,6 +92,7 @@ const App = () => {
           <Route path='farmer/farmland/create' element={<CreateFarmland/>}/>
           <Route path='farmer/farmland/edit/:id' element={<EditFarmland/>}/>
           <Route path='farmer/farmland/list' element={<FarmLand/>}/>
+          <Route path='farmer/farmland/sensor-data/:id' element={<SensorDataPage/>}/>
         </Route>
         </Route>
       </>

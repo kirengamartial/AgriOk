@@ -72,9 +72,10 @@ const FarmLand = () => {
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
           {farmlands?.map((farmland) => (
-            <div 
+            <Link 
               key={farmland.id} 
               className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200 overflow-hidden relative"
+              to={`/dashboard${getBaseRoute()}/farmland/sensor-data/${farmland.id}`}
             >
               <div className="absolute top-2 right-2 flex gap-2">
                 <Link 
@@ -116,7 +117,7 @@ const FarmLand = () => {
                   </div>
                 </div>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       )}
