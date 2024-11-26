@@ -114,6 +114,10 @@ const FarmLand = () => {
                       <span className="font-medium">Size:</span>{' '}
                       <span>{farmland.size} hectares</span>
                     </p>
+                    <p className="text-sm sm:text-base text-gray-600">
+                      <span className="font-medium">ID:</span>{' '}
+                      <span>{farmland.id}</span>
+                    </p>
                   </div>
                 </div>
               </div>

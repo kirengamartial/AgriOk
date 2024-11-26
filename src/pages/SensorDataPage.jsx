@@ -1,26 +1,29 @@
 import React, { useEffect, useState } from 'react';
 import { useGetSensorDataQuery, useGetSingleFarmlandsQuery } from '../slices/userSlices/userApiSlice';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { format, parseISO } from 'date-fns';
 import { AlertTriangle } from 'lucide-react';
 import SensorNotFound from '../components/SensorNotFound';
 import SensorIsLoading from '../components/SensorIsLoading';
+import { useSelector } from 'react-redux';
 
 const SensorDataPage = () => {
   const { id } = useParams();
   const [dateRange, setDateRange] = useState('30d');
   const { data: sensorData, refetch, isLoading } = useGetSensorDataQuery(dateRange);
+  const { userInfo } = useSelector(state => state.auth);
   const {data:farmland, refetch: refetchFarmland} = useGetSingleFarmlandsQuery(id)
+
+  const getBaseRoute = () => userInfo.isAdmin ? '/admin' : '/farmer';
 
   useEffect(() => {
     refetchFarmland()
     refetch();
   }, [dateRange, refetch, refetchFarmland]);
 
-  const extractKeys = (data) => {
-    if (!data || !data.sensor_data || !data.sensor_data[id]) return [];
-    const firstEntry = Object.values(data.sensor_data[id])[0];
-    return Object.keys(firstEntry).filter(key => 
+  const extractKeys = (entry) => {
+    if (!entry) return [];
+    return Object.keys(entry).filter(key => 
       key !== 'id' && key !== 'farmland_id' && key !== 'time'
     );
   };
@@ -33,7 +36,7 @@ const SensorDataPage = () => {
       <header className="mb-8">
         <h1 className="text-3xl font-bold text-green-800">Farmland Management</h1>
         <p className="text-gray-600">Location: {farmland && farmland.location}</p>
-        <p className="text-gray-600">Size: {farmland && farmland.size}</p>
+        <p className="text-gray-600">Size: {farmland && farmland.size} hectares</p>
         <p className="text-gray-600">sensors: {farmland && farmland.sensors}</p>
       </header>
 
@@ -54,59 +57,32 @@ const SensorDataPage = () => {
         </select>
       </div>
 
-      {/* Sensor Data Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-        {extractKeys(sensorData).map((key) => (
-          <div
-            key={key}
-            className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300"
-          >
-            <div className="p-4 border-b">
-              <h2 className="text-lg font-semibold capitalize text-green-800">{key}</h2>
-            </div>
-            <div className="p-4">
-              {sensorData?.sensor_data?.[id]?.['0']?.[key] !== undefined ? (
-                <p className="text-4xl font-bold text-green-600">
-                  {sensorData.sensor_data[id]['0'][key]}
-                  {key === 'Temperature' ? '°C' :
-                   key === 'moisture' ? '%' :
-                   key === 'pressure' ? ' hPa' : ''}
-                </p>
-              ) : (
-                <div className="flex items-center text-yellow-600">
-                  <AlertTriangle className="mr-2" />
-                  <span>No data available</span>
-                </div>
-              )}
-            </div>
+      {/* Sensor Data Tables */}
+      {Object.values(sensorData.sensor_data[id]).map((entry, index) => (
+        <div key={index} className="bg-white rounded-lg shadow-md mb-6">
+          <div className="p-4 border-b">
+            <h2 className="text-lg font-semibold text-green-800">
+              Sensor Data - {format(parseISO(entry.time), 'yyyy-MM-dd HH:mm:ss')}
+            </h2>
           </div>
-        ))}
-      </div>
-
-      {/* Sensor Data Table */}
-      <div className="bg-white rounded-lg shadow-md">
-        <div className="p-4 border-b">
-          <h2 className="text-lg font-semibold text-green-800">Sensor Data Details</h2>
-        </div>
-        <div className="p-4 overflow-x-auto">
-          <table className="w-full border-collapse">
-            <thead className="bg-gray-100">
-              <tr>
-                <th className="px-4 py-2 text-left border">Date</th>
-                {extractKeys(sensorData).map((key) => (
-                  <th key={key} className="px-4 py-2 text-left border capitalize text-green-800">
-                    {key}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {Object.values(sensorData.sensor_data[id]).map((entry, index) => (
-                <tr key={index} className="hover:bg-gray-50 transition-colors duration-200">
-                  <td className="px-4 py-2 border">
-                    {format(parseISO(entry.time), 'yyyy-MM-dd HH:mm:ss')}
-                  </td>
-                  {extractKeys(sensorData).map((key) => (
+          <div className="p-4 overflow-x-auto">
+            <table className="w-full border-collapse">
+              <thead className="bg-gray-100">
+                <tr>
+                  {extractKeys(entry).map((key) => (
+                    <th 
+                      key={key} 
+                      className="px-4 py-2 text-left border capitalize text-green-800"
+                    >
+                      {key}
+                    </th>
+                  ))}
+                    <th className="px-4 py-2 text-left border">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr className="hover:bg-gray-50 transition-colors duration-200">
+                  {extractKeys(entry).map((key) => (
                     <td key={key} className="px-4 py-2 border">
                       {entry[key] !== undefined
                         ? `${entry[key]}${
@@ -117,12 +93,21 @@ const SensorDataPage = () => {
                         : 'N/A'}
                     </td>
                   ))}
+                  <td className="px-4 py-2 border">
+                    <Link 
+                      to={`/dashboard${getBaseRoute()}/sensor-detail/${id}/${index}`} 
+                      className="text-green-600 hover:text-green-800 hover:underline"
+                    >
+                      View Details
+                    </Link>
+                  </td>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+                
+              </tbody>
+            </table>
+          </div>
         </div>
-      </div>
+      ))}
     </div>
   );
 };
