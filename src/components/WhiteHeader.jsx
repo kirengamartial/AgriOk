@@ -6,6 +6,7 @@ import { useLogoutMutation } from '../slices/userSlices/userApiSlice';
 import { logOut } from '../slices/userSlices/authSlice';
 import { useDispatch } from 'react-redux';
 import { useGetProfileQuery } from '../slices/userSlices/userApiSlice';
+import image from '../../public/AgriOK Branding-01.png'
 
 const WhiteHeader = () => {
   const {userInfo} = useSelector(state => state.auth);
@@ -40,7 +41,11 @@ const WhiteHeader = () => {
           <div className="flex items-center py-4">
             <div className="flex items-center space-x-6 flex-1">
               <Link to="/" className="text-xl font-bold">
-                AgriOk
+                <img
+                src={image}
+                alt='logo'
+                className='h-9'
+                />
               </Link>
 
               <nav className="hidden md:flex space-x-6 text-sm">
